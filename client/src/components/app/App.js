@@ -16,7 +16,7 @@ class App extends Component {
 
   render() {
     const {socket} = this.state;
-    
+
     socket.onopen = function(e) {
       console.log('Подлкючение установлено');
     };
@@ -31,6 +31,9 @@ class App extends Component {
       } else {
         console.log('Соединение прервано(');
       }
+      this.setState({
+        socket: new WebSocket("ws://localhost:5000")
+      });
     }
 
     socket.onerror = function(err) {
@@ -38,7 +41,7 @@ class App extends Component {
     }
 
     function sendData(data) {
-      socket.send(JSON.stringify(data));
+      socket.send(data);
     }
 
     return (
