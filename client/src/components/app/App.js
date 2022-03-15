@@ -22,7 +22,12 @@ class App extends Component {
     };
   
     socket.onmessage = (e) => {
-      this.setState({data: e.data});
+      const message = JSON.parse(e);
+      if (message.title === 'connected-count') {
+        this.setState({connectedCount: message.count});
+      } else {
+        this.setState({data: e.data});
+      }
     }
   
     socket.onclose = (e) => {
