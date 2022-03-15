@@ -22,8 +22,8 @@ function counters() {
 
 //обращаемся к серверу и подписываемся на событие подключение 
 wss.on('connection', function connection(ws) {
+    counters(); 
     broadcastMessage()
-    counters();
     console.log(counter.count);
     ws.send(JSON.stringify(messages))
     // ws.on('close', function close(ws) {
@@ -37,7 +37,7 @@ wss.on('connection', function connection(ws) {
 
 function broadcastMessage() {
     wss.clients.forEach(client => {
-        client.send(JSON.stringify(counter.count))
+        client.send(JSON.stringify(counter))
     })
 }
 
