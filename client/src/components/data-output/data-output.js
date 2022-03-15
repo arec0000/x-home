@@ -2,7 +2,7 @@ import ConnectedCount from '../connected-count/connected-count';
 
 import './data-output.css';
 
-function DataOutput() {
+function DataOutput({data}) {
     return (
         <div className="data-output">
             <div className="data-output__header">
@@ -10,7 +10,7 @@ function DataOutput() {
                 <ConnectedCount/>
             </div>
             <div className="data-output__field">
-                
+                {data}
             </div>
             <button className="data-output__clear">очистить</button>
         </div>
