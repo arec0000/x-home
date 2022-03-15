@@ -10,6 +10,7 @@ class App extends Component {
     super(props);
     this.state = {
       socket: new WebSocket("ws://localhost:5000"),
+      connectedCount: 0,
       data: ''
     }
   }
@@ -25,15 +26,15 @@ class App extends Component {
       this.setState({data: e.data});
     }
 
-    socket.onclose = function(e) {
+    socket.onclose = (e) => {
       if (e.wasClean) {
         console.log('Соединение закрыто');
       } else {
         console.log('Соединение прервано(');
+        this.setState({
+          socket: new WebSocket("ws://localhost:5000")
+        });
       }
-      this.setState({
-        socket: new WebSocket("ws://localhost:5000")
-      });
     }
 
     socket.onerror = function(err) {
@@ -46,7 +47,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <DataOutput data={this.state.data}/>
+        <DataOutput data={this.state.data} connectedCount={this.state.connectedCount}/>
         <DataSend onSend={sendData}/>
       </div>
     );
