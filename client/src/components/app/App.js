@@ -20,7 +20,7 @@ class App extends Component {
       console.log('Подлкючение установлено');
     };
 
-    socket.onmessage = function(e) {
+    socket.onmessage = (e) => {
       this.setState({data: e.data});
     }
 
