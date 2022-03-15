@@ -9,13 +9,14 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      socket: new WebSocket("ws://localhost:5000"),
       data: ''
     }
   }
 
   render() {
-    const socket = new WebSocket("ws://localhost:5000");
-
+    const {socket} = this.state;
+    
     socket.onopen = function(e) {
       console.log('Подлкючение установлено');
     };
