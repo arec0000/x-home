@@ -31,9 +31,6 @@ class App extends Component {
         console.log('Соединение закрыто');
       } else {
         console.log('Соединение прервано(');
-        this.setState({
-          socket: new WebSocket("ws://localhost:5000")
-        });
       }
     }
 
