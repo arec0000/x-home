@@ -9,23 +9,22 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket: new WebSocket("ws://localhost:5000"),
       connectedCount: 0,
       data: ''
     }
   }
 
   render() {
-    const {socket} = this.state;
+    const {socket} = this.props;
 
     socket.onopen = function(e) {
       console.log('Подлкючение установлено');
     };
-
+  
     socket.onmessage = (e) => {
       this.setState({data: e.data});
     }
-
+  
     socket.onclose = (e) => {
       if (e.wasClean) {
         console.log('Соединение закрыто');
@@ -33,11 +32,11 @@ class App extends Component {
         console.log('Соединение прервано(');
       }
     }
-
+  
     socket.onerror = function(err) {
       console.log('Ошибка');
     }
-
+    
     function sendData(data) {
       socket.send(data);
     }
