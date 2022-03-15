@@ -19,10 +19,12 @@ class App extends Component {
 
     socket.onopen = function(e) {
       console.log('Подлкючение установлено');
+      socket.send(JSON.stringify({title: 'authentication', id: 'app'}));
     };
   
     socket.onmessage = (e) => {
       const message = JSON.parse(e.data);
+      console.log(message);
       if (message.title === 'connected-count') {
         console.log('count');
         this.setState({connectedCount: message.count});
