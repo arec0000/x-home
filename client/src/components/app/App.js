@@ -24,6 +24,7 @@ class App extends Component {
     socket.onmessage = (e) => {
       const message = JSON.parse(e.data);
       if (message.title === 'connected-count') {
+        console.log('count');
         this.setState({connectedCount: message.count});
       } else {
         this.setState({data: e.data});
