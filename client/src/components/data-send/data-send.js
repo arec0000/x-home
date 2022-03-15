@@ -25,6 +25,7 @@ class DataSend extends Component {
         const {key1, key2, key3, value1, value2, value3} = this.state;
         e.preventDefault();
         this.props.onSend(JSON.stringify({
+            title: 'data-from-app',
             [key1]: value1,
             [key2]: value2,
             [key3]: value3
