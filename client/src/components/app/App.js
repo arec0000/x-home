@@ -36,10 +36,14 @@ class App extends Component {
       console.log('Ошибка');
     }
 
+    function sendData(data) {
+      socket.send(JSON.stringify(data));
+    }
+
     return (
       <div className="App">
         <DataOutput data={this.state.data}/>
-        <DataSend/>
+        <DataSend onSend={sendData}/>
       </div>
     );
   }
