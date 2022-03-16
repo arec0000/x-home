@@ -6,49 +6,50 @@ class DataSend extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            key1: '',
-            key2: '',
-            key3: '',
-            value1: '',
-            value2: '',
-            value3: ''
+            keys: ['', '', ''],
+            values: ['', '', '']
         }
     }
 
     onInput = (e) => {
-        this.setState({
-            [e.target.getAttribute('data-input')]: e.target.value
-        });
+        if (e.target.getAttribute('data-key')) {
+            this.setState(({keys}) => {
+                const newKeys = [...keys];
+                newKeys[e.target.getAttribute('data-key') - 1] = e.target.value;
+                return {keys: newKeys}
+            });
+        }
+        if (e.target.getAttribute('data-value')) {
+            this.setState(({values}) => {
+                const newValues = [...values];
+                newValues[e.target.getAttribute('data-value') - 1] = e.target.value;
+                return {values: newValues}
+            });
+        }
     }
 
     onSubmit = (e) => {
-        const {key1, key2, key3, value1, value2, value3} = this.state;
+        const {keys, values} = this.state;
         e.preventDefault();
-        this.props.onSend(JSON.stringify({
-            title: 'data-from-app',
-            [key1]: value1,
-            [key2]: value2,
-            [key3]: value3
-        }));
 
-        console.log(JSON.stringify({
-            [key1]: value1,
-            [key2]: value2,
-            [key3]: value3
-        }));
+        const data = {
+            title: 'data-from-app'
+        }
+
+        keys.forEach((key, i) => {
+            data[key] = values[i]
+        });
+
+        this.props.onSend(JSON.stringify(data));
 
         this.setState({
-            key1: '',
-            key2: '',
-            key3: '',
-            value1: '',
-            value2: '',
-            value3: ''
+            keys: ['', '', ''],
+            values: ['', '', '']
         });
     }
 
     render() {
-        const {key1, key2, key3, value1, value2, value3} = this.state;
+        const {keys, values} = this.state;
         return (
             <div className="data-send">
                 <h2 className="data-send__header">Отправка данных подключенным клиентам</h2>
@@ -57,19 +58,19 @@ class DataSend extends Component {
                         <div>
                             <h3 className="data-send__input-line__header">ключ 1</h3>
                             <input className="data-send__input"
-                                   value={key1}
+                                   value={keys[0]}
                                    type="text" 
                                    placeholder="введите что-то" 
-                                   data-input="key1"
+                                   data-key="1"
                                    onChange={this.onInput}/>
                         </div>
                         <div>
                             <h3 className="data-send__input-line__header">значение 1</h3>
                             <input className="data-send__input"
-                                   value={value1}
+                                   value={values[0]}
                                    type="text" 
                                    placeholder="введите что-то"
-                                   data-input="value1"
+                                   data-value="1"
                                    onChange={this.onInput}/>
                         </div>
                     </div>
@@ -77,19 +78,19 @@ class DataSend extends Component {
                         <div>
                             <h3 className="data-send__input-line__header">ключ 2</h3>
                             <input className="data-send__input"
-                                   value={key2}
+                                   value={keys[1]}
                                    type="text" 
                                    placeholder="введите что-то"
-                                   data-input="key2"
+                                   data-key="2"
                                    onChange={this.onInput}/>
                         </div>
                         <div>
                             <h3 className="data-send__input-line__header">значение 2</h3>
                             <input className="data-send__input"
-                                   value={value2}
+                                   value={values[1]}
                                    type="text"
                                    placeholder="введите что-то"
-                                   data-input="value2"
+                                   data-value="2"
                                    onChange={this.onInput}/>
                         </div>
                     </div>
@@ -97,19 +98,19 @@ class DataSend extends Component {
                         <div>
                             <h3 className="data-send__input-line__header">ключ 3</h3>
                             <input className="data-send__input"
-                                   value={key3}
+                                   value={keys[2]}
                                    type="text"
                                    placeholder="введите что-то"
-                                   data-input="key3"
+                                   data-key="3"
                                    onChange={this.onInput}/>
                         </div>
                         <div>
                             <h3 className="data-send__input-line__header">значение 3</h3>
                             <input className="data-send__input"
-                                   value={value3}
+                                   value={values[2]}
                                    type="text"
                                    placeholder="введите что-то"
-                                   data-input="value3"
+                                   data-value="3"
                                    onChange={this.onInput}/>
                         </div>
                     </div>

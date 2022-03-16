@@ -6,56 +6,83 @@ import DataSend from '../data-send/data-send';
 import './App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      connectedCount: 0,
-      data: ''
+    constructor(props) {
+        super(props);
+        this.state = {
+            socket: null,
+            connectedCount: 0,
+            data: ''
+        }
     }
-  }
 
-  render() {
-    const {socket} = this.props;
+    connect = () => {
+        const socket = new WebSocket("ws://localhost:5000");
 
-    socket.onopen = function(e) {
-      console.log('Подлкючение установлено');
-      socket.send(JSON.stringify({title: 'authentication', id: 'app'}));
-    };
-  
-    socket.onmessage = (e) => {
-      const message = JSON.parse(e.data);
-      console.log(message);
-      if (message.title === 'connected-count') {
-        console.log('count');
-        this.setState({connectedCount: message.count});
-      } else {
-        this.setState({data: e.data});
-      }
-    }
-  
-    socket.onclose = (e) => {
-      if (e.wasClean) {
-        console.log('Соединение закрыто');
-      } else {
-        console.log('Соединение прервано(');
-      }
-    }
-  
-    socket.onerror = function(err) {
-      console.log('Ошибка');
-    }
+        socket.onopen = () => {
+            socket.send(JSON.stringify({title: 'authentication', id: 'app'}));
+            this.setState({socket: socket});
+            console.log('Подлкючение установлено');
+        };
+        
+        socket.onmessage = e => {
+            const message = JSON.parse(e.data);
+            if (message.title === 'connected-count') {
+                this.setState({connectedCount: message.count});
+            } else {
+                this.setState({data: e.data});
+            }
+        }
+
+        socket.onclose = e => {
+            if (e.wasClean) {
+                console.log('Соединение закрыто');
+            } else {
+                console.log('Соединение прервано');
+                this.setState({
+                    connectedCount: 0,
+                    data: 'Соединение прервано, переподключение..'
+                });
+            }
+            setTimeout(() => this.connect(), 3000);
+        }
     
-    function sendData(data) {
-      socket.send(data);
+        socket.onerror = err => {
+            console.error(`Ошибка: ${err.message}`);
+            socket.close();
+        }
     }
 
-    return (
-      <div className="App">
-        <DataOutput data={this.state.data} connectedCount={this.state.connectedCount}/>
-        <DataSend onSend={sendData}/>
-      </div>
-    );
-  }
+    sendData = (data) => {
+        try {
+            this.state.socket.send(data);
+        } catch (err) {
+            console.error(`Ошибка при отправке данных: ${err.message}`);
+            this.setState({
+                data: 'Ошибка при отправке данных..'
+            });
+        }
+    }
+
+    onClearData = () => {
+        this.setState({data: ''});
+    }
+
+    componentDidMount() {
+        this.connect();
+    }
+
+    render() {
+        const {connectedCount, data} = this.state;
+        return (
+            <div className="App">
+                <DataOutput 
+                    data={data} 
+                    connectedCount={connectedCount}
+                    onClearData={this.onClearData}/>
+                <DataSend onSend={this.sendData}/>
+            </div>
+        );
+    }
 }
 
 export default App;

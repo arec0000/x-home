@@ -2,7 +2,7 @@ import ConnectedCount from '../connected-count/connected-count';
 
 import './data-output.css';
 
-function DataOutput({data, connectedCount}) {
+function DataOutput({data, connectedCount, onClearData}) {
     return (
         <div className="data-output">
             <div className="data-output__header">
@@ -12,7 +12,7 @@ function DataOutput({data, connectedCount}) {
             <div className="data-output__field">
                 {data}
             </div>
-            <button className="data-output__clear">очистить</button>
+            <button className="data-output__clear" onClick={onClearData}>очистить</button>
         </div>
     );
 }
