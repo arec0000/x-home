@@ -16,7 +16,7 @@ class App extends Component {
     }
 
     connect = () => {
-        const socket = new WebSocket("ws://localhost:5000");
+        const socket = new WebSocket("ws://81.163.29.85:5000");
 
         socket.onopen = () => {
             socket.send(JSON.stringify({title: 'authentication', id: 'app'}));
