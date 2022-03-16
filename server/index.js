@@ -2,55 +2,39 @@ const ws = require('ws');
 //создаём сервер из пакета ws
 const wss = new ws.Server({
     port: 5000,
-}, () => console.log('server start '))
-
-const messages = {
-    name: 'Пошел Дима в лес'
-}
+}, () => console.log('server start'))
 
 const counter = {
-	title: "connected-count",
-	count: 0   
+	title: 'connected-count',
+	count: 0  
 }
 
-function counters() {
-    counter.count = 0;
-    wss.clients.forEach( () => {
-        counter.count += 1;
-    })
-}
-
-//обращаемся к серверу и подписываемся на событие подключение 
-wss.on('connection', function connection(ws) {
-    counters(); 
-    broadcastMessage()
-    ws.send(JSON.stringify(messages))
-    // ws.on('close', function close(ws) {
-        
-    // })
+wss.on('connection', (ws) => {
+    console.log('Пользователь подключился')
+    counter.count = wss.clients.size
+    sendToApp(counter)
+    ws.send(JSON.stringify('Подключение установлено'))
     ws.on('message', function (message) {
         const newMessage = JSON.parse(message)
-        if (newMessage.title == "authentication") {
+        if (newMessage.title == 'authentication') {
             ws.id = newMessage.id;
-            console.log(ws.id);
-        } else if (newMessage.title == "data-from-app") {
-            uotputMessageClient(message);
-        } else {
+            ws.send(JSON.stringify(counter))
+        } else if (newMessage.title == 'data-from-app') {
+            sendExceptApp(message);
             console.log(JSON.parse(message))
-            // ws.send(JSON.stringify(JSON.parse(message)))
-            outputJastClient(message);
+        } else {
+            sendToApp(JSON.parse(message));
+            console.log(JSON.parse(message))
         }
-         
+    })
+    ws.on('close', () => {
+        counter.count = wss.clients.size
+        sendToApp(counter)
+        console.log('Пользователь отключился')
     })
 })
 
-function broadcastMessage() {
-    wss.clients.forEach(client => {
-        client.send(JSON.stringify(counter))
-    })
-}
-
-function uotputMessageClient(message) {
+function sendExceptApp(message) {
     wss.clients.forEach(client => {
         if (client.id !== 'app') {
             client.send(JSON.stringify(JSON.parse(message)))
@@ -58,10 +42,10 @@ function uotputMessageClient(message) {
     })
 }
 
-function outputJastClient(message) {
+function sendToApp(message) {
     wss.clients.forEach(client => {
         if (client.id === 'app') {
-            client.send(JSON.stringify(JSON.parse(message)))
+            client.send(JSON.stringify(message))
         }
     })
 }
