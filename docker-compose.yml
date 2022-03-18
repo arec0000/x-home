@@ -1,5 +1,8 @@
 version: '3'
 
+volumes:
+    mongodb_volume:
+
 services:
   server:
     build: server/
@@ -12,3 +15,13 @@ services:
     restart: always
     ports:
       - 80:80
+
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongodb_volume:/data/db
+    restart: always
+    container_name: mongo
+    hostname: mongo
+    ports:
+      - 27017:27017

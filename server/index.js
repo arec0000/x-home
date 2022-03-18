@@ -1,4 +1,23 @@
+const mongoose = require('mongoose');
 const ws = require('ws');
+// const Post = require('./Post');
+
+// async function startApp() {
+//     try {
+//         await mongoose.connect('mongodb://localhost:27017/x-home', {useNewUrlParser: true, useUnifiedTopology: true})
+//     } catch (e) {
+//         console.log(e)
+//     }
+//     const post = await Post.create({author: 'ffffff', title: 'ffffffff'})
+//     const posts = await Post.find({});
+//     console.log(post);
+//     console.log(posts);
+
+// }
+// startApp();
+
+
+
 //создаём сервер из пакета ws
 const wss = new ws.Server({
     port: 5000,
@@ -6,7 +25,7 @@ const wss = new ws.Server({
 
 const counter = {
 	title: 'connected-count',
-	count: 0  
+	count: 0
 }
 
 wss.on('connection', (ws) => {
@@ -49,3 +68,4 @@ function sendToApp(message) {
         }
     })
 }
+
