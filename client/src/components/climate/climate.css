@@ -1,0 +1,61 @@
+.climate {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.climate span {
+    margin-right: 15px;
+}
+
+.climate input {
+    width: 70px;
+    padding: 10px;
+    background-color: #C4CFD8;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    outline: #C4CFD8;
+    transition-property: box-shadow, background-color, outline;
+    transition-duration: 0.15s;
+}
+
+.climate input:hover {
+    outline: 1px solid #C4CFD8;
+    box-shadow: 0 2px 15px #C5CFFF;
+}
+
+.climate input:focus {
+    outline: none;
+    background-color: #A3AFB9;
+    box-shadow: 0 2px 5px #C5CFFF;
+}
+
+@media(max-width: 930px) {
+    .climate {
+        flex-direction: column;
+        max-width: 530px;
+    }
+
+    .climate div:first-child {
+        margin-bottom: 15px;
+    }
+}
+
+@media(max-width: 530px) {
+    .climate {
+        font-size: 24px;
+        max-width: 300px;
+    }
+
+    .climate input {
+        font-size: 14px;
+        width: 30px;
+    }
+}
+

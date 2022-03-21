@@ -1,5 +1,7 @@
 import { Component } from 'react';
 
+import ClimateWidget from '../climate/climate';
+
 import './App.css';
 
 class App extends Component {
@@ -7,6 +9,8 @@ class App extends Component {
         super(props);
         this.state = {
             socket: null,
+            sensTemp: 27.3,
+            sensWetness: 40
         }
     }
 
@@ -65,7 +69,12 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-
+                <ul className="widgets">
+                    <ClimateWidget
+                        key={1}
+                        sensTemp={this.state.sensTemp}
+                        sensWetness={this.state.sensWetness}/>
+                </ul>
             </div>
         );
     }

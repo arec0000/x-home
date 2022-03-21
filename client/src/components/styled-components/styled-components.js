@@ -1,0 +1,20 @@
+import styled from 'styled-components';
+
+const WidgetGround = styled.li`
+    margin: 0 auto 20px auto;
+    padding: 20px 25px 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .20);
+    background-color: white;
+    outline: white;
+    list-style: none;
+    transition-property: box-shadow, outline;
+    transition-duration: 0.15s;
+
+    &:hover {
+        outline: 1px solid white;
+        box-shadow: 0 2px 15px #C5CFFF;
+    }
+`;
+
+export default WidgetGround;
