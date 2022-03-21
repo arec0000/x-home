@@ -1,8 +1,5 @@
 import { Component } from 'react';
 
-import DataOutput from '../data-output/data-output';
-import DataSend from '../data-send/data-send';
-
 import './App.css';
 
 class App extends Component {
@@ -10,20 +7,18 @@ class App extends Component {
         super(props);
         this.state = {
             socket: null,
-            connectedCount: 0,
-            data: ''
         }
     }
 
     connect = () => {
-        const socket = new WebSocket("ws://81.163.29.85:5000");
+        const socket = new WebSocket("ws://localhost:5000");
 
         socket.onopen = () => {
             socket.send(JSON.stringify({title: 'authentication', id: 'app'}));
             this.setState({socket: socket});
             console.log('Подлкючение установлено');
         };
-        
+
         socket.onmessage = e => {
             const message = JSON.parse(e.data);
             if (message.title === 'connected-count') {
@@ -45,7 +40,7 @@ class App extends Component {
             }
             setTimeout(() => this.connect(), 3000);
         }
-    
+
         socket.onerror = err => {
             console.error(`Ошибка: ${err.message}`);
             socket.close();
@@ -63,23 +58,14 @@ class App extends Component {
         }
     }
 
-    onClearData = () => {
-        this.setState({data: ''});
-    }
-
     componentDidMount() {
         this.connect();
     }
 
     render() {
-        const {connectedCount, data} = this.state;
         return (
             <div className="App">
-                <DataOutput 
-                    data={data} 
-                    connectedCount={connectedCount}
-                    onClearData={this.onClearData}/>
-                <DataSend onSend={this.sendData}/>
+
             </div>
         );
     }
