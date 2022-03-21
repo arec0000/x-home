@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import Header from '../header/header';
 
 import './App.css';
 
@@ -7,6 +8,7 @@ class App extends Component {
         super(props);
         this.state = {
             socket: null,
+            connectedStatus: true
         }
     }
 
@@ -65,6 +67,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
+                <Header connectedStatus={this.state.connectedStatus}/>
 
             </div>
         );
