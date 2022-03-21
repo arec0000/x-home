@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const ws = require('ws');
+const express = require('express');
+
 // const Post = require('./Post');
 
 // async function startApp() {
@@ -15,6 +17,21 @@ const ws = require('ws');
 
 // }
 // startApp();
+
+
+const app = express();
+
+const PORT = 3000;
+
+app.listen(PORT, (error) => {
+    error ? console.log(error) : console.log(`Сервер запущен на ${PORT} порту`);
+})
+
+app.use(express.static('build'));
+//отслеживание гет запросов по этому роуту
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/build/index.html');
+});
 
 
 

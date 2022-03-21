@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import Header from '../header/header';
 
 import ClimateWidget from '../climate/climate';
 
@@ -10,7 +11,8 @@ class App extends Component {
         this.state = {
             socket: null,
             sensTemp: 27.3,
-            sensWetness: 40
+            sensWetness: 40,
+            connectedStatus: true
         }
     }
 
@@ -69,6 +71,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
+                <Header connectedStatus={this.state.connectedStatus}/>
                 <ul className="widgets">
                     <ClimateWidget
                         key={1}
