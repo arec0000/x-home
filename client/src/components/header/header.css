@@ -1,6 +1,8 @@
 header {
     display: flex;
     padding: 0;
+    font-weight: bold;
+    font-size: 36px;
 }
 
 .button-menu{
@@ -20,24 +22,20 @@ header {
 }
 
 .connect-status-off {
+    color: red;
     margin-left: auto;
     margin-right: 15px;
-    font-size: 36px;
-    color: red;
     padding-top: 10px;
-    font-weight: bold;
 }
 
 .connect-status-on {
     color: #99E699;
     margin-left: auto;
-    font-size: 36px;
-    padding-top: 10px;
-    font-weight: bold;
     margin-right: 20px;
+    padding-top: 10px;
 }
 
-@media screen and (max-width: 622px) {
+@media (max-width: 622px) {
     .connect-status-on {
         margin-left: 30px;
         font-size: 30px;
@@ -46,7 +44,7 @@ header {
     }
 }
 
-@media screen and (max-width: 540px) {
+@media (max-width: 540px) {
     .connect-status-on {
         margin-left: 20px;
         font-size: 28px;

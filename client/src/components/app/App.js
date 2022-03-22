@@ -2,6 +2,7 @@ import { Component } from 'react';
 import Header from '../header/header';
 
 import ClimateWidget from '../climate/climate';
+import DoorControl from '../door/door';
 
 import './App.css';
 
@@ -12,7 +13,8 @@ class App extends Component {
             socket: null,
             sensTemp: 27.3,
             sensWetness: 40,
-            connectedStatus: true
+            connectedStatus: true,
+            doorControl: false
         }
     }
 
@@ -68,6 +70,12 @@ class App extends Component {
         this.connect();
     }
 
+    onClickDoor = () => {
+        this.setState(({doorControl}) => ({
+            doorControl: !doorControl
+        }));
+    }
+
     render() {
         return (
             <div className="App">
@@ -77,6 +85,10 @@ class App extends Component {
                         key={1}
                         sensTemp={this.state.sensTemp}
                         sensWetness={this.state.sensWetness}/>
+                    <DoorControl
+                        key={2}
+                        doorControl={this.state.doorControl}
+                        onClickDoor={this.onClickDoor}/>
                 </ul>
             </div>
         );

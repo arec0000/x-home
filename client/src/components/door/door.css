@@ -1,0 +1,116 @@
+.door-control {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: 36px;
+    align-items: center;
+    font-weight: bold;
+}
+
+.door-off-on {
+    margin-left: 39px;
+}
+
+.button-status-off {
+    width: 400px;
+    height: 72px;
+    font-size: 36px;
+    font-weight: bold;
+    border: 0;
+    background-color: rgba(249, 185, 185, 1);
+    border-radius: 10px;
+    outline: #C4CFD8;
+    transition-property: box-shadow, background-color, outline;
+    transition-duration: 0.15s;
+}
+
+.button-status-on {
+    width: 400px;
+    height: 72px;
+    font-size: 36px;
+    font-weight: bold;
+    border: 0;
+    background-color: rgba(153, 231, 153, 1);
+    border-radius: 10px;
+    outline: #C4CFD8;
+    transition-property: box-shadow, background-color, outline;
+    transition-duration: 0.26s;
+}
+
+.button-status-off:hover {
+    outline: 1px solid #C4CFD8;
+    box-shadow: 0 2px 15px #C5CFFF;
+}
+
+.button-status-on:hover {
+    outline: 1px solid #C4CFD8;
+    box-shadow: 0 2px 15px #C5CFFF;
+}
+
+@media (max-width: 929px) {
+    .door-control {
+        padding:20px;
+        width: 540px;
+    }
+    .button-status-on {
+        width: 240px;
+        height: 60px;
+    }
+    .button-status-off {
+        width: 240px;
+        height: 60px;
+    }
+    .door-off-on {
+        margin-left: 10px;
+        margin-right: 0px;
+    }
+}
+
+@media (max-width: 616px) {
+    .button-status-on {
+        width: 180px;
+        height: 60px;
+    }
+    .button-status-off {
+        width: 180px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 546px) {
+    .button-status-on {
+        width: 180px;
+        height: 60px;
+        font-size: 30px;
+    }
+    .button-status-off {
+        width: 180px;
+        height: 60px;
+        font-size: 30px;
+    }
+    .door-off-on {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 530px) {
+    .door-control {
+        width: 320px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .button-status-on {
+        width: 130px;
+        height: 50px;
+        font-size: 24px;
+    }
+    .button-status-off {
+        width: 130px;
+        height: 50px;
+        font-size: 24px;
+    }
+    .door-off-on {
+        font-size: 24px;
+        margin-left: 0px;
+    }
+}
