@@ -1,6 +1,6 @@
 .door-control {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
     font-size: 36px;
     align-items: center;
@@ -47,49 +47,26 @@
     box-shadow: 0 2px 15px #C5CFFF;
 }
 
-@media (max-width: 929px) {
+@media (max-width: 930px) {
     .door-control {
         padding:20px;
-        width: 540px;
+        padding-right: 5px;
+        width: 545px;
     }
     .button-status-on {
-        width: 240px;
+        width: 180px;
         height: 60px;
+        font-size: 28px;
     }
     .button-status-off {
-        width: 240px;
+        width: 150px;
         height: 60px;
+        font-size: 28px;
     }
     .door-off-on {
-        margin-left: 10px;
         margin-right: 0px;
-    }
-}
-
-@media (max-width: 616px) {
-    .button-status-on {
-        width: 180px;
-        height: 60px;
-    }
-    .button-status-off {
-        width: 180px;
-        height: 60px;
-    }
-}
-
-@media (max-width: 546px) {
-    .button-status-on {
-        width: 180px;
-        height: 60px;
-        font-size: 30px;
-    }
-    .button-status-off {
-        width: 180px;
-        height: 60px;
-        font-size: 30px;
-    }
-    .door-off-on {
-        font-size: 32px;
+        margin-left: 0px;
+        padding-left: 0;
     }
 }
 

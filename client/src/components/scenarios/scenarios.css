@@ -1,0 +1,63 @@
+.scenarios-control {
+    font-size: 36px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.scenarios-control span {
+    margin-left: 39px;
+}
+
+.scenarios-control button {
+    width: 400px;
+    height: 72px;
+    font-size: 36px;
+    font-weight: bold;
+    border: 0;
+    background-color: rgba(231, 242, 255, 1);
+    border-radius: 10px;
+    outline: #C4CFD8;
+    transition-property: box-shadow, background-color, outline;
+    transition-duration: 0.26s;
+}
+
+.scenarios-control button:hover {
+    outline: 1px solid #C4CFD8;
+    box-shadow: 0 2px 15px #C5CFFF;
+}
+
+@media (max-width: 930px) {
+    .scenarios-control {
+        padding:20px;
+        width: 540px;
+    }
+    .scenarios-control button {
+        width: 210px;
+        height: 60px;
+        font-size: 28px;
+    }
+    .scenarios-control span {
+        margin-left: 0px;
+    }
+}
+
+@media (max-width: 530px) {
+    .scenarios-control {
+        width: 320px;
+        padding-left: 15px;
+        padding-right: 15px;
+        font-size: 24px;
+    }
+    .scenarios-control button {
+        width: 200px;
+        height: 50px;
+        font-size: 24px;
+    }
+    .scenarios-control span {
+        margin-right: 15px;
+        margin-left: 0px;
+    }
+}
+

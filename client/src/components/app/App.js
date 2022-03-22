@@ -1,8 +1,10 @@
 import { Component } from 'react';
-import Header from '../header/header';
 
+import Header from '../header/header';
 import ClimateWidget from '../climate/climate';
 import DoorControl from '../door/door';
+import LightControl from '../light/light';
+import ScenariosControl from '../scenarios/scenarios';
 
 import './App.css';
 
@@ -14,7 +16,14 @@ class App extends Component {
             sensTemp: 27.3,
             sensWetness: 40,
             connectedStatus: true,
-            doorControl: false
+            doorControl: false,
+            lightButtons: [
+                {name: 'спальня', shine: true, id: 1},
+                {name: 'кухня', shine: false, id: 2},
+                {name: 'гостинная', shine: false, id: 3},
+                {name: 'территория', shine: false, id: 4},
+                {name: 'гараж', shine: false, id: 5}
+            ]
         }
     }
 
@@ -77,18 +86,24 @@ class App extends Component {
     }
 
     render() {
+        const {connectedStatus, sensTemp, sensWetness, doorControl, lightButtons} = this.state;
         return (
             <div className="App">
-                <Header connectedStatus={this.state.connectedStatus}/>
+                <Header connectedStatus={connectedStatus}/>
                 <ul className="widgets">
                     <ClimateWidget
                         key={1}
-                        sensTemp={this.state.sensTemp}
-                        sensWetness={this.state.sensWetness}/>
+                        sensTemp={sensTemp}
+                        sensWetness={sensWetness}/>
                     <DoorControl
                         key={2}
-                        doorControl={this.state.doorControl}
+                        doorControl={doorControl}
                         onClickDoor={this.onClickDoor}/>
+                    <LightControl
+                        key={3}
+                        lightButtons={lightButtons}/>
+                    <ScenariosControl
+                        key={4}/>
                 </ul>
             </div>
         );
