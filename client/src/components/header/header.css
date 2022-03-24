@@ -1,24 +1,43 @@
 header {
     display: flex;
     padding: 0;
+    margin-bottom: 35px;
     font-weight: bold;
     font-size: 36px;
 }
 
-.button-menu{
+.button-menu {
     margin-left: 25px;
-    background: url(../pictures/meny.svg);
+    background: url(../pictures/menu.svg);
     width: 85px;
-    height: 80px;
+    height: 75px;
     border: 0;
+    transition-property: filter, opacity;
+    transition-duration: 0.15s;
+    cursor: pointer;
 }
 
-.button-settings{
+.button-menu:hover {
+    opacity: .8;
+    -webkit-filter: drop-shadow( 0 2px 15px #C5CFFF);
+    filter: drop-shadow( 0 2px 15px #C5CFFF);
+}
+
+.button-settings {
     margin-right: 25px;
     background: url(../pictures/settings.svg);
     width: 80px;
     height: 80px;
     border: 0;
+    transition-property: filter, opacity;
+    transition-duration: 0.15s;
+    cursor: pointer;
+}
+
+.button-settings:hover {
+    opacity: .8;
+    -webkit-filter: drop-shadow( 0 2px 10px #C5CFFF);
+    filter: drop-shadow( 0 2px 10px #C5CFFF);
 }
 
 .connect-status-off {
@@ -31,24 +50,129 @@ header {
 .connect-status-on {
     color: #99E699;
     margin-left: auto;
-    margin-right: 20px;
+    margin-right: 25px;
     padding-top: 10px;
 }
 
-@media (max-width: 622px) {
+.menu-shading {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateX(-100%);
+    opacity: 0;
+    background-color: rgba(46, 46, 53, .25);
+    transition: opacity 0.3s;
+}
+
+.menu-shading.active {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.menu {
+    position: fixed;
+    top: 0px;
+    width: 25%;
+    height: 100%;
+    transform: translateX(-100%);
+    background-color: #B0B0B6;
+    transition: all 0.3s;
+}
+
+.menu.active {
+    transform: translateX(0);
+}
+
+.pagesList {
+    margin: 0;
+    padding: 0;
+    margin-top: 15px;
+    font-size: 32px;
+    color: #F8F8F8;
+}
+
+.pagesList li {
+    padding: 0 0 5px 25px;
+    list-style: none;
+    cursor: pointer;
+    transition-property: box-shadow, background-color, padding;
+    transition-duration: 0.15s;
+}
+
+.pagesList .current {
+    background-color: #9D9DA1;
+}
+
+.pagesList li:hover {
+    padding-left: 30px;
+    background-color: #BCBCC2;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .05);
+}
+
+.pagesList li:active {
+    background-color: #8C8C94;
+}
+
+@media (max-width: 1200px) {
+    .menu {
+        width: 40%;
+    }
+}
+
+@media (max-width: 900px) {
+    .menu {
+        width: 50%;
+    }
+
+    .pagesList li {
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 630px) {
+    .button-menu{
+        transform: scale(0.8);
+    }
+
+    .button-settings {
+        transform: scale(0.9);
+        background-position: 0 -3px;
+    }
+
     .connect-status-on {
-        margin-left: 30px;
-        font-size: 30px;
-        margin-right: 15px;
-        padding-top: 0;
+        margin-left: auto;
+        margin-right: 10px;
+        padding-top: 15px;
+        font-size: 28px;
+    }
+
+    .connect-status-off {
+        color: red;
+        margin-left: auto;
+        margin-right: 10px;
+        padding-top: 15px;
+        font-size: 28px;
+    }
+
+    .menu {
+        width: 55%;
     }
 }
 
 @media (max-width: 540px) {
-    .connect-status-on {
-        margin-left: 20px;
-        font-size: 28px;
+        .connect-status-on {
+        margin-left: auto;
         margin-right: 10px;
-        padding-top: 0;
+        padding-top: 21px;
+        font-size: 22px;
+    }
+
+    .connect-status-off {
+        color: red;
+        margin-left: auto;
+        margin-right: 10px;
+        padding-top: 21px;
+        font-size: 282x;
     }
 }

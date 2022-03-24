@@ -4,18 +4,46 @@ import './header.css';
 
 class Header extends Component {
 
-    render() {
-        let connected = "датчики отключены";
-        if (this.props.connectedStatus) {
-            connected = "датчики подключены";
+    onToggleMenu = (e) => {
+        if (e.target.classList.contains('menu-shading')) {
+            this.props.onToggleMenu();
         }
-        const clazz = this.props.connectedStatus ? "connect-status-on" : "connect-status-off";
+    }
+
+    render() {
+        const {connectedStatus, menuOpen, pages, currentPage, onToggleMenu, changePage} = this.props;
+
+        let connected = 'датчики отключены';
+        if (connectedStatus) {
+            connected = 'датчики подключены';
+        }
+        if (connectedStatus === undefined) {
+            connected = '';
+        }
+        const clazz = connectedStatus ? "connect-status-on" : "connect-status-off";
+
+        const links = pages.map(item => (
+            <li
+                className={item === currentPage ? 'current' : ''}
+                onClick={() => changePage(item)}>
+                    {item}
+            </li>
+        ));
 
         return (
             <header>
                 <button type="button"
-                        className="button-menu">
+                        className="button-menu"
+                        onClick={onToggleMenu}>
                 </button>
+
+                <div className={`menu-shading${menuOpen ? " active" : ""}`} onClick={this.onToggleMenu}/>
+
+                <nav className={`menu${menuOpen ? " active" : ""}`}>
+                    <ul className="pagesList">
+                        {links}
+                    </ul>
+                </nav>
 
                 <span type="text"
                       className={clazz}>
