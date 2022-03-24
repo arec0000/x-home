@@ -100,9 +100,9 @@ class App extends Component {
         }))
     }
 
-    componentDidMount() {
-        this.connect();
-    }
+    // componentDidMount() {
+    //     this.connect();
+    // }
 
     render() {
         const {connectedStatus, menuOpen, pages, currentPage, sensTemp, sensWetness, doorControl, lightButtons} = this.state;
@@ -131,7 +131,8 @@ class App extends Component {
                             <ClimateWidget
                                 key={1}
                                 sensTemp={sensTemp}
-                                sensWetness={sensWetness}/>
+                                sensWetness={sensWetness}
+                                onChangeClimate={this.onChangeClimate}/>
                             <DoorControl
                                 key={2}
                                 doorControl={doorControl}

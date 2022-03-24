@@ -2,46 +2,47 @@
     font-size: 36px;
     font-weight: bold;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
 }
 
-.scenarios-control span {
-    margin-left: 39px;
-}
-
 .scenarios-control button {
-    width: 400px;
-    height: 72px;
+    padding: 10px 55px 10px 55px;
     font-size: 36px;
     font-weight: bold;
     border: 0;
     background-color: rgba(231, 242, 255, 1);
     border-radius: 10px;
-    outline: #C4CFD8;
     transition-property: box-shadow, background-color, outline;
     transition-duration: 0.26s;
 }
 
 .scenarios-control button:hover {
-    outline: 1px solid #C4CFD8;
     box-shadow: 0 2px 15px #C5CFFF;
 }
 
-@media (max-width: 930px) {
+.scenarios-control button:focus {
+    outline: none;
+    box-shadow: 0 2px 15px #C5CFFF;
+}
+
+@media (max-width: 665px) {
     .scenarios-control {
-        padding:20px;
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
     }
-    .scenarios-control button {
-        height: 60px;
-        font-size: 28px;
-    }
+
     .scenarios-control span {
-        margin-left: 0px;
+        margin-bottom: 15px;
+    }
+
+    .scenarios-control button {
+        padding: 10px 0 10px 0;
     }
 }
 
-@media (max-width: 530px) {
+@media (max-width: 465px) {
     .scenarios-control {
         padding-left: 15px;
         padding-right: 15px;
@@ -49,14 +50,6 @@
 
     }
     .scenarios-control button {
-        height: 50px;
         font-size: 24px;
-
-    }
-    .scenarios-control span {
-        margin-right: 15px;
-        margin-left: 0px;
-
     }
 }
-

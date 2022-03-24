@@ -2,9 +2,9 @@ import styled from 'styled-components';
 
 const WidgetGround = styled.li`
     margin: 0 auto 20px auto;
-    padding: 20px 25px 20px 25px;
+    padding: 20px 35px 20px 35px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, .20);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .20);
     background-color: white;
     outline: white;
     list-style: none;
@@ -13,7 +13,13 @@ const WidgetGround = styled.li`
 
     &:hover {
         outline: 1px solid white;
-        box-shadow: 0 2px 15px #C5CFFF;
+        box-shadow: 0 2px 10px #C5CFFF;
+    }
+
+    @media (max-width: 410px) {
+        & {
+            padding: 20px 15px 20px 15px;
+        }
     }
 `;
 

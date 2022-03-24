@@ -25,6 +25,7 @@ class Header extends Component {
         const links = pages.map(item => (
             <li
                 className={item === currentPage ? 'current' : ''}
+                key={item}
                 onClick={() => changePage(item)}>
                     {item}
             </li>

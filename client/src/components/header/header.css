@@ -76,7 +76,7 @@ header {
     width: 25%;
     height: 100%;
     transform: translateX(-100%);
-    background-color: #B0B0B6;
+    background-color: #414157;
     transition: all 0.3s;
 }
 
@@ -89,7 +89,7 @@ header {
     padding: 0;
     margin-top: 15px;
     font-size: 32px;
-    color: #F8F8F8;
+    color: #FDFDFD;
 }
 
 .pagesList li {
@@ -101,17 +101,17 @@ header {
 }
 
 .pagesList .current {
-    background-color: #9D9DA1;
+    background-color: #353548;
 }
 
 .pagesList li:hover {
     padding-left: 30px;
-    background-color: #BCBCC2;
+    background-color: #53536C;
     box-shadow: 0 0 5px rgba(0, 0, 0, .05);
 }
 
 .pagesList li:active {
-    background-color: #8C8C94;
+    background-color: #2E2E3F;
 }
 
 @media (max-width: 1200px) {
