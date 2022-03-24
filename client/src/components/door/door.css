@@ -9,6 +9,7 @@
 
 .door-off-on {
     margin-left: 39px;
+    display: block;
 }
 
 .button-status-off {
@@ -51,17 +52,12 @@
     .door-control {
         padding:20px;
         padding-right: 5px;
-        width: 545px;
     }
     .button-status-on {
-        width: 180px;
         height: 60px;
-        font-size: 28px;
     }
     .button-status-off {
-        width: 150px;
         height: 60px;
-        font-size: 28px;
     }
     .door-off-on {
         margin-right: 0px;
@@ -70,24 +66,28 @@
     }
 }
 
+@media (max-width: 764px) {
+    .door-off-on {
+        margin-bottom: 20px;
+    }
+}
+
 @media (max-width: 530px) {
     .door-control {
-        width: 320px;
         padding-left: 15px;
         padding-right: 15px;
     }
     .button-status-on {
-        width: 130px;
         height: 50px;
         font-size: 24px;
     }
     .button-status-off {
-        width: 130px;
         height: 50px;
         font-size: 24px;
     }
     .door-off-on {
         font-size: 24px;
         margin-left: 0px;
+        margin-bottom: 20px;
     }
 }

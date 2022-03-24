@@ -85,6 +85,13 @@ class App extends Component {
         }));
     }
 
+    onToggleLight = (id) => {
+        this.setState(({lightButtons}) => ({
+            lightButtons: lightButtons.map(item =>
+                item.id === id ? {...item, shine: !item.shine} : item
+            )
+        }))
+    }
     render() {
         const {connectedStatus, sensTemp, sensWetness, doorControl, lightButtons} = this.state;
         return (
@@ -101,7 +108,8 @@ class App extends Component {
                         onClickDoor={this.onClickDoor}/>
                     <LightControl
                         key={3}
-                        lightButtons={lightButtons}/>
+                        lightButtons={lightButtons}
+                        onToggleLight={this.onToggleLight}/>
                     <ScenariosControl
                         key={4}/>
                 </ul>
