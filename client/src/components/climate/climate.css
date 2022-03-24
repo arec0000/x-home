@@ -39,7 +39,18 @@
 @media(max-width: 930px) {
     .climate {
         flex-direction: column;
+        align-items: stretch;
         max-width: 530px;
+    }
+
+    .climate div {
+        margin-left: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .climate input {
+        margin-right: 15px;
     }
 
     .climate div:first-child {
@@ -47,10 +58,14 @@
     }
 }
 
-@media(max-width: 530px) {
+@media(max-width: 560px) {
     .climate {
         font-size: 24px;
         max-width: 300px;
+    }
+
+    .climate input {
+        margin-right: 5px;
     }
 
     .climate input {
