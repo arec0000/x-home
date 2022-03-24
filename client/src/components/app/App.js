@@ -13,8 +13,10 @@ class App extends Component {
         super(props);
         this.state = {
             socket: null,
-            menuOpen: false,
             connectedStatus: true,
+            menuOpen: false,
+            pages: ['Главная', 'Теплица', 'Робот'],
+            currentPage: 'Главная',
             sensTemp: 27.3,
             sensWetness: 40,
             doorControl: false,
@@ -80,6 +82,10 @@ class App extends Component {
         this.setState(({menuOpen}) => ({menuOpen: !menuOpen}));
     }
 
+    changePage = (page) => {
+        this.setState({currentPage: page});
+    }
+
     onClickDoor = () => {
         this.setState(({doorControl}) => ({
             doorControl: !doorControl
@@ -91,28 +97,57 @@ class App extends Component {
     }
 
     render() {
-        const {connectedStatus, menuOpen, sensTemp, sensWetness, doorControl, lightButtons} = this.state;
+        const {connectedStatus, menuOpen, pages, currentPage, sensTemp, sensWetness, doorControl, lightButtons} = this.state;
+
+        let Page;
+
+        switch (currentPage) {
+            case 'Теплица':
+                Page = () => {
+                    return (
+                        <h3>Тут типо теплица</h3>
+                    )
+                }
+                break;
+            case 'Робот':
+                Page = () => {
+                    return (
+                        <h3>А тут робот</h3>
+                    )
+                }
+                break;
+            default:
+                Page = () => {
+                    return (
+                        <ul className="widgets">
+                            <ClimateWidget
+                                key={1}
+                                sensTemp={sensTemp}
+                                sensWetness={sensWetness}/>
+                            <DoorControl
+                                key={2}
+                                doorControl={doorControl}
+                                onClickDoor={this.onClickDoor}/>
+                            <LightControl
+                                key={3}
+                                lightButtons={lightButtons}/>
+                            <ScenariosControl
+                                key={4}/>
+                        </ul>
+                    )
+                }
+        }
+
         return (
             <div className="App">
                 <Header
                     connectedStatus={connectedStatus}
                     menuOpen={menuOpen}
-                    onToggleMenu={this.onToggleMenu}/>
-                <ul className="widgets">
-                    <ClimateWidget
-                        key={1}
-                        sensTemp={sensTemp}
-                        sensWetness={sensWetness}/>
-                    <DoorControl
-                        key={2}
-                        doorControl={doorControl}
-                        onClickDoor={this.onClickDoor}/>
-                    <LightControl
-                        key={3}
-                        lightButtons={lightButtons}/>
-                    <ScenariosControl
-                        key={4}/>
-                </ul>
+                    pages={pages}
+                    currentPage={currentPage}
+                    onToggleMenu={this.onToggleMenu}
+                    changePage={this.changePage}/>
+                <Page/>
             </div>
         );
     }

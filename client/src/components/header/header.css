@@ -84,6 +84,52 @@ header {
     transform: translateX(0);
 }
 
+.pagesList {
+    margin: 0;
+    padding: 0;
+    margin-top: 15px;
+    font-size: 32px;
+    color: #F8F8F8;
+}
+
+.pagesList li {
+    padding: 0 0 5px 25px;
+    list-style: none;
+    cursor: pointer;
+    transition-property: box-shadow, background-color, padding;
+    transition-duration: 0.15s;
+}
+
+.pagesList .current {
+    background-color: #9D9DA1;
+}
+
+.pagesList li:hover {
+    padding-left: 30px;
+    background-color: #BCBCC2;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .05);
+}
+
+.pagesList li:active {
+    background-color: #8C8C94;
+}
+
+@media (max-width: 1200px) {
+    .menu {
+        width: 40%;
+    }
+}
+
+@media (max-width: 900px) {
+    .menu {
+        width: 50%;
+    }
+
+    .pagesList li {
+        font-size: 40px;
+    }
+}
+
 @media (max-width: 630px) {
     .button-menu{
         transform: scale(0.8);
@@ -107,6 +153,10 @@ header {
         margin-right: 10px;
         padding-top: 15px;
         font-size: 28px;
+    }
+
+    .menu {
+        width: 55%;
     }
 }
 

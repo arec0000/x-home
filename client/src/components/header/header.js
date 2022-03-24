@@ -11,26 +11,38 @@ class Header extends Component {
     }
 
     render() {
+        const {connectedStatus, menuOpen, pages, currentPage, onToggleMenu, changePage} = this.props;
+
         let connected = 'датчики отключены';
-        if (this.props.connectedStatus) {
+        if (connectedStatus) {
             connected = 'датчики подключены';
         }
-        if (this.props.connectedStatus === undefined) {
+        if (connectedStatus === undefined) {
             connected = '';
         }
-        const clazz = this.props.connectedStatus ? "connect-status-on" : "connect-status-off";
+        const clazz = connectedStatus ? "connect-status-on" : "connect-status-off";
+
+        const links = pages.map(item => (
+            <li
+                className={item === currentPage ? 'current' : ''}
+                onClick={() => changePage(item)}>
+                    {item}
+            </li>
+        ));
 
         return (
             <header>
                 <button type="button"
                         className="button-menu"
-                        onClick={this.props.onToggleMenu}>
+                        onClick={onToggleMenu}>
                 </button>
 
-                <div className={`menu-shading${this.props.menuOpen ? " active" : ""}`} onClick={this.onToggleMenu}/>
+                <div className={`menu-shading${menuOpen ? " active" : ""}`} onClick={this.onToggleMenu}/>
 
-                <nav className={`menu${this.props.menuOpen ? " active" : ""}`}>
-
+                <nav className={`menu${menuOpen ? " active" : ""}`}>
+                    <ul className="pagesList">
+                        {links}
+                    </ul>
                 </nav>
 
                 <span type="text"
