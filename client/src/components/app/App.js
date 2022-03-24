@@ -13,9 +13,10 @@ class App extends Component {
         super(props);
         this.state = {
             socket: null,
+            menuOpen: false,
+            connectedStatus: true,
             sensTemp: 27.3,
             sensWetness: 40,
-            connectedStatus: true,
             doorControl: false,
             lightButtons: [
                 {name: 'спальня', shine: true, id: 1},
@@ -75,8 +76,8 @@ class App extends Component {
         }
     }
 
-    componentDidMount() {
-        this.connect();
+    onToggleMenu = () => {
+        this.setState(({menuOpen}) => ({menuOpen: !menuOpen}));
     }
 
     onClickDoor = () => {
@@ -85,11 +86,18 @@ class App extends Component {
         }));
     }
 
+    componentDidMount() {
+        this.connect();
+    }
+
     render() {
-        const {connectedStatus, sensTemp, sensWetness, doorControl, lightButtons} = this.state;
+        const {connectedStatus, menuOpen, sensTemp, sensWetness, doorControl, lightButtons} = this.state;
         return (
             <div className="App">
-                <Header connectedStatus={connectedStatus}/>
+                <Header
+                    connectedStatus={connectedStatus}
+                    menuOpen={menuOpen}
+                    onToggleMenu={this.onToggleMenu}/>
                 <ul className="widgets">
                     <ClimateWidget
                         key={1}

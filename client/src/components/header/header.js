@@ -4,6 +4,12 @@ import './header.css';
 
 class Header extends Component {
 
+    onToggleMenu = (e) => {
+        if (e.target.classList.contains('menu-shading')) {
+            this.props.onToggleMenu();
+        }
+    }
+
     render() {
         let connected = 'датчики отключены';
         if (this.props.connectedStatus) {
@@ -17,8 +23,15 @@ class Header extends Component {
         return (
             <header>
                 <button type="button"
-                        className="button-menu">
+                        className="button-menu"
+                        onClick={this.props.onToggleMenu}>
                 </button>
+
+                <div className={`menu-shading${this.props.menuOpen ? " active" : ""}`} onClick={this.onToggleMenu}/>
+
+                <nav className={`menu${this.props.menuOpen ? " active" : ""}`}>
+
+                </nav>
 
                 <span type="text"
                       className={clazz}>
