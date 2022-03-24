@@ -5,9 +5,12 @@ import './header.css';
 class Header extends Component {
 
     render() {
-        let connected = "датчики отключены";
+        let connected = 'датчики отключены';
         if (this.props.connectedStatus) {
-            connected = "датчики подключены";
+            connected = 'датчики подключены';
+        }
+        if (this.props.connectedStatus === undefined) {
+            connected = '';
         }
         const clazz = this.props.connectedStatus ? "connect-status-on" : "connect-status-off";
 

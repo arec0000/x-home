@@ -1,15 +1,11 @@
 body {
     background-color: #F9F9F7;
-    padding-top: 30px;
+    padding-top: 15px;
     padding-bottom: 50px;
   }
 
-.App {
-  /* text-align: center; */
-  max-width: 980px;
-  margin: 0 auto;
-}
-
 .widgets {
+    margin: 0 auto;
     padding: 0 25px 0 25px;
+    max-width: 980px;
 }
