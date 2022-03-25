@@ -11,7 +11,7 @@ class Header extends Component {
     }
 
     render() {
-        const {connectedStatus, menuOpen, pages, currentPage, onToggleMenu, changePage} = this.props;
+        const {menuOpened, currentPage, pages, connectedStatus, onToggleMenu, changePage} = this.props;
 
         let connected = 'датчики отключены';
         if (connectedStatus) {
@@ -38,9 +38,9 @@ class Header extends Component {
                         onClick={onToggleMenu}>
                 </button>
 
-                <div className={`menu-shading${menuOpen ? " active" : ""}`} onClick={this.onToggleMenu}/>
+                <div className={`menu-shading${menuOpened ? " active" : ""}`} onClick={this.onToggleMenu}/>
 
-                <nav className={`menu${menuOpen ? " active" : ""}`}>
+                <nav className={`menu${menuOpened ? " active" : ""}`}>
                     <ul className="pagesList">
                         {links}
                     </ul>

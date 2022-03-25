@@ -13,12 +13,11 @@ class App extends Component {
         super(props);
         this.state = {
             socket: null,
-            connectedStatus: true,
-            menuOpen: false,
-            pages: ['Главная', 'Теплица', 'Робот'],
+            menuOpened: false,
             currentPage: 'Главная',
-            sensTemp: 27.3,
-            sensWetness: 40,
+            pages: ['Главная', 'Теплица', 'Робот'],
+            connectedStatus: true, //нужно переделать
+            climate: {sensTemp: 27.3, sensWet: 40, wishTemp: 29, wishWet: 55},
             doorControl: false,
             lightButtons: [
                 {name: 'спальня', shine: true, id: 1},
@@ -79,7 +78,7 @@ class App extends Component {
     }
 
     onToggleMenu = () => {
-        this.setState(({menuOpen}) => ({menuOpen: !menuOpen}));
+        this.setState(({menuOpened}) => ({menuOpened: !menuOpened}));
     }
 
     changePage = (page) => {
@@ -105,7 +104,7 @@ class App extends Component {
     // }
 
     render() {
-        const {connectedStatus, menuOpen, pages, currentPage, sensTemp, sensWetness, doorControl, lightButtons} = this.state;
+        const {menuOpened, currentPage, pages, connectedStatus, climate, doorControl, lightButtons} = this.state;
 
         let Page;
 
@@ -130,9 +129,7 @@ class App extends Component {
                         <ul className="widgets">
                             <ClimateWidget
                                 key={1}
-                                sensTemp={sensTemp}
-                                sensWetness={sensWetness}
-                                onChangeClimate={this.onChangeClimate}/>
+                                climate={climate}/>
                             <DoorControl
                                 key={2}
                                 doorControl={doorControl}
@@ -151,10 +148,10 @@ class App extends Component {
         return (
             <div className="App">
                 <Header
-                    connectedStatus={connectedStatus}
-                    menuOpen={menuOpen}
-                    pages={pages}
+                    menuOpened={menuOpened}
                     currentPage={currentPage}
+                    pages={pages}
+                    connectedStatus={connectedStatus}
                     onToggleMenu={this.onToggleMenu}
                     changePage={this.changePage}/>
                 <Page/>
