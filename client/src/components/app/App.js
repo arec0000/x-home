@@ -85,20 +85,6 @@ class App extends Component {
         this.setState({currentPage: page});
     }
 
-    onClickDoor = () => {
-        this.setState(({doorControl}) => ({
-            doorControl: !doorControl
-        }));
-    }
-
-    onToggleLight = (id) => {
-        this.setState(({lightButtons}) => ({
-            lightButtons: lightButtons.map(item =>
-                item.id === id ? {...item, shine: !item.shine} : item
-            )
-        }))
-    }
-
     // componentDidMount() {
     //     this.connect();
     // }
@@ -123,7 +109,7 @@ class App extends Component {
                     )
                 }
                 break;
-            default:
+            default: //Главная
                 Page = () => {
                     return (
                         <ul className="widgets">
@@ -132,12 +118,10 @@ class App extends Component {
                                 climate={climate}/>
                             <DoorControl
                                 key={2}
-                                doorControl={doorControl}
-                                onClickDoor={this.onClickDoor}/>
+                                doorControl={doorControl}/>
                             <LightControl
                                 key={3}
-                                lightButtons={lightButtons}
-                                onToggleLight={this.onToggleLight}/>
+                                lightButtons={lightButtons}/>
                             <ScenariosControl
                                 key={4}/>
                         </ul>

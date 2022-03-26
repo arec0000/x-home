@@ -16,7 +16,7 @@
     font-size: 36px;
     font-weight: bold;
     border: 0;
-    background-color: rgba(249, 185, 185, .7);
+    background-color: rgba(249, 185, 185, .8);
     border-radius: 10px;
     transition-property: box-shadow, background-color, outline;
     transition-duration: 0.15s;
@@ -27,10 +27,20 @@
     font-size: 36px;
     font-weight: bold;
     border: 0;
-    background-color: rgba(153, 231, 153, .5);
+    background-color: rgba(153, 231, 153, .7);
     border-radius: 10px;
     transition-property: box-shadow, background-color, background-color;
     transition-duration: 0.23s;
+}
+
+.button-status-off:focus {
+    outline: none;
+    box-shadow: 0 2px 15px #C5CFFF;
+}
+
+.button-status-on:focus {
+    outline: none;
+    box-shadow: 0 2px 15px #C5CFFF;
 }
 
 .button-status-off:hover {
@@ -41,14 +51,12 @@
     box-shadow: 0 2px 15px #C5CFFF;
 }
 
-.button-status-off:focus {
-    outline: none;
-    background-color: rgba(153, 231, 153, .75);
+.button-status-off:active {
+    background-color: rgba(153, 231, 153, .85);
     box-shadow: 0 2px 5px #C5CFFF;
 }
 
-.button-status-on:focus {
-    outline: none;
+.button-status-on:active {
     background-color: rgba(249, 185, 185, .9);
     box-shadow: 0 2px 5px #C5CFFF;
 }

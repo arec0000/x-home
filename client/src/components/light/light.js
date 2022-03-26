@@ -4,20 +4,32 @@ import WidgetGround from "../styled-components/styled-components";
 
 import './light.css';
 
-
 class LightControl extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            lightButtons: this.props.lightButtons
+        }
+    }
+
+    onToggleLight = (id) => {
+        this.setState(({lightButtons}) => ({
+            lightButtons: lightButtons.map(item =>
+                item.id === id ? {...item, shine: !item.shine} : item
+            )
+        }))
+    }
+
     render() {
-        const {lightButtons} = this.props;
 
-        const buttons = lightButtons.map(item => {
+        const buttons = this.state.lightButtons.map(item => {
             const clazz = item.shine ? 'light-on' : 'light-off';
-
             return (
                 <button
                     className={clazz}
                     type="button"
                     key={item.id}
-                    onClick={() => this.props.onToggleLight(item.id)}>
+                    onClick={() => this.onToggleLight(item.id)}>
                     {item.name}
                 </button>
             )

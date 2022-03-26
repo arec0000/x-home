@@ -23,8 +23,8 @@
     padding-right: 20px;
     flex-grow: 1;
     transition-property: box-shadow, background-color, outline;
-    transition-duration: 0.20s;
-    background-color: #DEDEDE;
+    transition-duration: 0.15s;
+    background-color: #EBECEE;
 }
 
 .light-on {
@@ -42,11 +42,21 @@
     transition-duration: 0.15s;
 }
 
+.light-off:focus {
+    outline: none;
+    box-shadow: 0 2px 15px #C5CFFF;
+}
+
+.light-on:focus {
+    outline: none;
+    box-shadow: 0 2px 15px #C5CFFF;
+}
+
 .light-off:hover {
     box-shadow: 0 2px 15px #C5CFFF;
 }
 
-.light-off:focus {
+.light-off:active {
     box-shadow: 0 2px 5px #C5CFFF;
 }
 
@@ -54,9 +64,10 @@
     box-shadow: 0 2px 15px #C5CFFF;
 }
 
- .light-on:focus {
+ .light-on:active {
     box-shadow: 0 2px 5px #C5CFFF;
 }
+
 
 @media (max-width: 830px) {
     .light-control div {
