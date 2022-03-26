@@ -13,11 +13,14 @@ class LightControl extends Component {
     }
 
     onToggleLight = (id) => {
-        this.setState(({lightButtons}) => ({
+        new Promise(resolve => this.setState(({lightButtons}) => ({
             lightButtons: lightButtons.map(item =>
                 item.id === id ? {...item, shine: !item.shine} : item
             )
-        }))
+        }), resolve))
+            .then(() =>
+                this.props.sendData(JSON.stringify({title: 'data-from-app-to-esp', lightButtons: this.state.lightButtons}))
+            );
     }
 
     render() {

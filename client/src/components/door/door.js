@@ -13,9 +13,10 @@ class DoorControl extends Component {
     }
 
     onClickDoor = () => {
-        this.setState(({doorControl}) => ({
-            doorControl: !doorControl
-        }));
+        new Promise(resolve => this.setState(({doorControl}) => ({doorControl: !doorControl}), resolve))
+            .then(() =>
+                this.props.sendData(JSON.stringify({title: 'data-from-app-to-esp', doorControl: this.state.doorControl}))
+            );
     }
 
     render() {
