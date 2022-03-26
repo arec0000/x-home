@@ -11,7 +11,7 @@
     margin-right: 15px;
 }
 
-.climate input {
+.climate__input {
     width: 70px;
     padding: 10px;
     background-color: #C4CFD8;
@@ -23,6 +23,10 @@
     outline: #C4CFD8;
     transition-property: box-shadow, background-color, outline;
     transition-duration: 0.15s;
+}
+
+.wrong {
+    background-color: rgba(249, 185, 185, .8);
 }
 
 .climate input:hover {

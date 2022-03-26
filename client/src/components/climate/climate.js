@@ -9,7 +9,9 @@ class ClimateWidget extends Component {
         super(props);
         this.state = {
             wishTemp: this.props.climate.wishTemp,
-            wishWet: this.props.climate.wishWet
+            wishWet: this.props.climate.wishWet,
+            tempIsValid: true,
+            wetIsValid: true
         }
     }
 
@@ -30,8 +32,19 @@ class ClimateWidget extends Component {
         }
     }
 
-    //Отправлять данные после снятия фокуса, проверять подходят ли они,
-    //если нет, не отправлять и менять цвет формы
+    onBlur = (e) => {
+        if (e.target.getAttribute('data-input') === 'wishTemp' && e.target.value >= 15 && e.target.value <= 35) {
+            this.setState({tempIsValid: true});
+        } else if (e.target.getAttribute('data-input') === 'wishTemp') {
+            this.setState({tempIsValid: false});
+        }
+
+        if (e.target.getAttribute('data-input') === 'wishWet' && e.target.value > 0) {
+            this.setState({wetIsValid: true});
+        } else if (e.target.getAttribute('data-input') === 'wishWet') {
+            this.setState({wetIsValid: false});
+        }
+    }
 
     render() {
         return (
@@ -39,18 +52,22 @@ class ClimateWidget extends Component {
                 <div>
                     <span>Температура {this.props.climate.sensTemp}°</span>
                     <input
+                        className={this.state.tempIsValid ? 'climate__input' : 'climate__input wrong'}
                         type="text"
                         value={this.state.wishTemp}
                         data-input="wishTemp"
-                        onChange={this.onChange}/>
+                        onChange={this.onChange}
+                        onBlur={this.onBlur}/>
                 </div>
                 <div>
                     <span>Влажность {this.props.climate.sensWetness}%</span>
                     <input
+                        className={this.state.wetIsValid ? 'climate__input' : 'climate__input wrong'}
                         type="text"
                         value={this.state.wishWet}
                         data-input="wishWet"
-                        onChange={this.onChange}/>
+                        onChange={this.onChange}
+                        onBlur={this.onBlur}/>
                 </div>
             </WidgetGround>
         )
