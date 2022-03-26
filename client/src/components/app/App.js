@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import socket from './socket';
 
 import Header from '../header/header';
 import ClimateWidget from '../climate/climate';
@@ -12,7 +13,6 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            socket: null,
             menuOpened: false,
             currentPage: 'Главная',
             pages: ['Главная', 'Теплица', 'Робот'],
@@ -29,54 +29,6 @@ class App extends Component {
         }
     }
 
-    connect = () => {
-        const socket = new WebSocket("ws://localhost:5000");
-
-        socket.onopen = () => {
-            socket.send(JSON.stringify({title: 'authentication', id: 'app'}));
-            this.setState({socket: socket});
-            console.log('Подлкючение установлено');
-        };
-
-        socket.onmessage = e => {
-            const message = JSON.parse(e.data);
-            if (message.title === 'connected-count') {
-                this.setState({connectedCount: message.count});
-            } else {
-                this.setState({data: e.data});
-            }
-        }
-
-        socket.onclose = e => {
-            if (e.wasClean) {
-                console.log('Соединение закрыто');
-            } else {
-                console.log('Соединение прервано');
-                this.setState({
-                    connectedCount: 0,
-                    data: 'Соединение прервано, переподключение..'
-                });
-            }
-            setTimeout(() => this.connect(), 3000);
-        }
-
-        socket.onerror = err => {
-            console.error(`Ошибка: ${err.message}`);
-            socket.close();
-        }
-    }
-
-    sendData = (data) => {
-        try {
-            this.state.socket.send(data);
-        } catch (err) {
-            console.error(`Ошибка при отправке данных: ${err.message}`);
-            this.setState({
-                data: 'Ошибка при отправке данных..'
-            });
-        }
-    }
-
     onToggleMenu = () => {
         this.setState(({menuOpened}) => ({menuOpened: !menuOpened}));
     }
@@ -85,9 +37,23 @@ class App extends Component {
         this.setState({currentPage: page});
     }
 
-    // componentDidMount() {
-    //     this.connect();
-    // }
+    sendData = (data) => {
+        try {
+            socket.chanel.send(data);
+            console.log(`Отправлены данные: ${data}`);
+        } catch (err) {
+            console.error(`Ошибка при отправке данных: ${err.message}`);
+        }
+    }
+
+    onMessage = (e) => {
+        const message = JSON.parse(e.data);
+        console.log(message);
+    }
+
+    componentDidMount() {
+        socket.connect(this.onMessage);
+    }
 
     render() {
         const {menuOpened, currentPage, pages, connectedStatus, climate, doorControl, lightButtons} = this.state;
@@ -115,13 +81,16 @@ class App extends Component {
                         <ul className="widgets">
                             <ClimateWidget
                                 key={1}
-                                climate={climate}/>
+                                climate={climate}
+                                sendData={this.sendData}/>
                             <DoorControl
                                 key={2}
-                                doorControl={doorControl}/>
+                                doorControl={doorControl}
+                                sendData={this.sendData}/>
                             <LightControl
                                 key={3}
-                                lightButtons={lightButtons}/>
+                                lightButtons={lightButtons}
+                                sendData={this.sendData}/>
                             <ScenariosControl
                                 key={4}/>
                         </ul>
