@@ -5,7 +5,7 @@ body {
 }
 
 .widgets {
+    max-width: 980px;
     margin: 0 auto;
     padding: 0 25px 0 25px;
-    max-width: 980px;
 }

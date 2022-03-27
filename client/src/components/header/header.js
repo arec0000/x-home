@@ -3,15 +3,21 @@ import { Component } from 'react'
 import './header.css';
 
 class Header extends Component {
-
-    onToggleMenu = (e) => {
-        if (e.target.classList.contains('menu-shading')) {
-            this.props.onToggleMenu();
+    constructor(props) {
+        super(props);
+        this.state = {
+            menuOpened: localStorage.getItem('menuLastState') === 'true'
         }
     }
 
+    onToggleMenu = () => {
+        new Promise(resolve => this.setState(({menuOpened}) => ({menuOpened: !menuOpened}), resolve))
+            .then(() => localStorage.setItem('menuLastState', this.state.menuOpened));
+            //Если придут данные с сервера это изменит главный стейт и закроет меню, что неудобно
+    }
+
     render() {
-        const {menuOpened, currentPage, pages, connectedStatus, onToggleMenu, changePage} = this.props;
+        const {currentPage, pages, connectedStatus, changePage} = this.props;
 
         let connected = 'датчики отключены';
         if (connectedStatus) {
@@ -35,12 +41,12 @@ class Header extends Component {
             <header>
                 <button type="button"
                         className="button-menu"
-                        onClick={onToggleMenu}>
+                        onClick={this.onToggleMenu}>
                 </button>
 
-                <div className={`menu-shading${menuOpened ? " active" : ""}`} onClick={this.onToggleMenu}/>
+                <div className={`menu-shading${this.state.menuOpened ? " active" : ""}`} onClick={this.onToggleMenu}/>
 
-                <nav className={`menu${menuOpened ? " active" : ""}`}>
+                <nav className={`menu${this.state.menuOpened ? " active" : ""}`}>
                     <ul className="pagesList">
                         {links}
                     </ul>

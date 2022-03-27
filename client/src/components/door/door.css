@@ -33,12 +33,12 @@
     transition-duration: 0.23s;
 }
 
-.button-status-off:focus {
+.button-status-off:focus-visible {
     outline: none;
     box-shadow: 0 2px 15px #C5CFFF;
 }
 
-.button-status-on:focus {
+.button-status-on:focus-visible {
     outline: none;
     box-shadow: 0 2px 15px #C5CFFF;
 }

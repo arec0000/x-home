@@ -42,12 +42,12 @@
     transition-duration: 0.15s;
 }
 
-.light-off:focus {
+.light-off:focus-visible {
     outline: none;
     box-shadow: 0 2px 15px #C5CFFF;
 }
 
-.light-on:focus {
+.light-on:focus-visible {
     outline: none;
     box-shadow: 0 2px 15px #C5CFFF;
 }

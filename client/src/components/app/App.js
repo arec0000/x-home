@@ -6,6 +6,7 @@ import ClimateWidget from '../climate/climate';
 import DoorControl from '../door/door';
 import LightControl from '../light/light';
 import ScenariosControl from '../scenarios/scenarios';
+import RobotControl from '../robot-control/robot-control';
 
 import './App.css';
 
@@ -13,8 +14,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuOpened: false,
-            currentPage: 'Главная',
+            currentPage: localStorage.getItem('lastPage') || 'Главная',
             pages: ['Главная', 'Теплица', 'Робот'],
             connectedStatus: true, //нужно переделать
             climate: {sensTemp: 27.3, sensWet: 40, wishTemp: 29, wishWet: 55},
@@ -25,16 +25,23 @@ class App extends Component {
                 {name: 'гостинная', shine: false, id: 3},
                 {name: 'территория', shine: false, id: 4},
                 {name: 'гараж', shine: false, id: 5}
+            ],
+            robot: {state: 0, current: 1, target: 5},
+            robotRooms: [
+                {name: 'Гараж', id: 1},
+                {name: 'Спальня', id: 2},
+                {name: 'Кухня', id: 3},
+                {name: 'Гостинная', id: 4},
+                {name: 'Корридор', id: 5},
+                {name: 'Гардеробная', id: 6},
+                {name: 'Холл', id: 7}
             ]
         }
     }
 
-    onToggleMenu = () => {
-        this.setState(({menuOpened}) => ({menuOpened: !menuOpened}));
-    }
-
     changePage = (page) => {
         this.setState({currentPage: page});
+        localStorage.setItem('lastPage', page);
     }
 
     sendData = (data) => {
@@ -56,27 +63,18 @@ class App extends Component {
     }
 
     render() {
-        const {menuOpened, currentPage, pages, connectedStatus, climate, doorControl, lightButtons} = this.state;
+        const {currentPage, pages, connectedStatus, climate, doorControl, lightButtons} = this.state;
 
-        let Page;
-
-        switch (currentPage) {
-            case 'Теплица':
-                Page = () => {
-                    return (
-                        <h3>Тут типо теплица</h3>
-                    )
-                }
-                break;
-            case 'Робот':
-                Page = () => {
-                    return (
-                        <h3>А тут робот</h3>
-                    )
-                }
-                break;
-            default: //Главная
-                Page = () => {
+        const Page = () => {
+            switch (currentPage) {
+                case 'Теплица':
+                    return <h3>Тут типо теплица</h3>
+                case 'Робот':
+                    return <RobotControl
+                                robot={this.state.robot}
+                                robotRooms={this.state.robotRooms}
+                                sendData={this.sendData}/>
+                default: //Главная
                     return (
                         <ul className="widgets">
                             <ClimateWidget
@@ -94,18 +92,16 @@ class App extends Component {
                             <ScenariosControl
                                 key={4}/>
                         </ul>
-                    )
-                }
+                    );
+            }
         }
 
         return (
             <div className="App">
                 <Header
-                    menuOpened={menuOpened}
                     currentPage={currentPage}
                     pages={pages}
                     connectedStatus={connectedStatus}
-                    onToggleMenu={this.onToggleMenu}
                     changePage={this.changePage}/>
                 <Page/>
             </div>
