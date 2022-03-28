@@ -7,6 +7,7 @@ import DoorControl from '../door/door';
 import LightControl from '../light/light';
 import ScenariosControl from '../scenarios/scenarios';
 import RobotControl from '../robot-control/robot-control';
+import Greenhouse from '../greenhouse/greenhouse';
 
 import './App.css';
 
@@ -35,6 +36,10 @@ class App extends Component {
                 {name: 'Корридор', id: 5},
                 {name: 'Гардеробная', id: 6},
                 {name: 'Холл', id: 7}
+            ],
+            farm: [
+                {temp: 27, humidity: 40},
+                {temp: 24, humidity: 74}
             ]
         }
     }
@@ -63,12 +68,16 @@ class App extends Component {
     }
 
     render() {
-        const {currentPage, pages, connectedStatus, climate, doorControl, lightButtons} = this.state;
+        const {currentPage, pages, connectedStatus, climate, doorControl, lightButtons, farm} = this.state;
 
         const Page = () => {
             switch (currentPage) {
                 case 'Теплица':
-                    return <h3>Тут типо теплица</h3>
+                    return <ul className='widgets'>
+                             <Greenhouse
+                                key={1}
+                                farm={farm}/>
+                           </ul>
                 case 'Робот':
                     return <RobotControl
                                 robot={this.state.robot}
