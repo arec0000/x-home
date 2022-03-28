@@ -64,7 +64,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        socket.connect(this.onMessage);
+        socket.connect('ws://localhost:5000', this.onMessage);
     }
 
     render() {
