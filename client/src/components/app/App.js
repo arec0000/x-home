@@ -17,7 +17,7 @@ class App extends Component {
         this.state = {
             currentPage: localStorage.getItem('lastPage') || 'Главная',
             pages: ['Главная', 'Теплица', 'Робот'],
-            connectedStatus: true, //нужно переделать
+            connectedStatus: {esp: true, greenhouse: true, robot: true},
             climate: {sensTemp: 27.3, sensWet: 40, wishTemp: 29, wishWet: 55},
             doorControl: false,
             lightButtons: [
