@@ -11,6 +11,7 @@ const counter = {
 
 wss.on('connection', (ws) => {
     console.log('Пользователь подключился')
+    ws.isAlive = true;
     counter.count = wss.clients.size
     sendToApp(counter)
     ws.send(JSON.stringify('Подключение установлено'))
@@ -41,6 +42,7 @@ wss.on('connection', (ws) => {
             ws.send(JSON.stringify({title: 'error', message: `Ошибка при получении данных, Никита плохой ${error.message}`}))
         }
     })
+    ws.on('pong', () =>  ws.isAlive = true)
     ws.on('close', () => {
         counter.count = wss.clients.size
         sendToApp(counter)
@@ -63,3 +65,15 @@ function sendToApp(message) {
         }
     })
 }
+
+const closeFallenConections = setInterval(() => {
+    wss.clients.forEach(client => {
+        if (!client.isAlive) {
+            client.terminate();
+            console.log('Связь с пользователем разорвана');
+        } else {
+            client.isAlive = false;
+            client.ping();
+        }
+    })
+}, 1000)
