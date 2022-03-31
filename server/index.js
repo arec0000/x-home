@@ -1,37 +1,38 @@
+const express = require('express');
 const mongoose = require('mongoose');
 const ws = require('ws');
-const express = require('express');
-
-// const Post = require('./Post');
-
-// async function startApp() {
-//     try {
-//         await mongoose.connect('mongodb://localhost:27017/x-home', {useNewUrlParser: true, useUnifiedTopology: true})
-//     } catch (e) {
-//         console.log(e)
-//     }
-//     const post = await Post.create({author: 'ffffff', title: 'ffffffff'})
-//     const posts = await Post.find({});
-//     console.log(post);
-//     console.log(posts);
-
-// }
-// startApp();
 
 
-const app = express()
+const Robot = require('./schemes/robot');
 
-const PORT = 3000;
+mongoose.connect('mongodb://localhost:27017/x-home', {useNewUrlParser: true, useUnifiedTopology: true})
 
-app.listen(PORT, (error) => {
-    error ? console.log(error) : console.log(`Сервер запущен на ${PORT} порту`)
-})
+async function init() {
+    Robot.findOne({}, (err, doc) => {
+        if (!doc) {
+            Robot.create({state: true, current: 1, target: 1}, (err, doc) => {
+                console.log('Создан дефолтный объект робота, по приказу Никиты')
+            });
+        } else {
+            console.log(doc)
+        }
+    })
+}
+init();
 
-app.use(express.static('build'))
-//отслеживание гет запросов по этому роуту
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/build/index.html')
-});
+// const app = express()
+
+// const PORT = 3000;
+
+// app.listen(PORT, (error) => {
+//     error ? console.log(error) : console.log(`Сервер запущен на ${PORT} порту`)
+// })
+
+// app.use(express.static('build'))
+// //отслеживание гет запросов по этому роуту
+// app.get('/', (req, res) => {
+//     res.sendFile(__dirname + '/build/index.html')
+// });
 
 const websocketServer = {
     start() {
@@ -43,7 +44,7 @@ const websocketServer = {
             console.log(`Всего пользователей ${this.chanel.clients.size}`)
             ws.isAlive = true;
             ws.send(JSON.stringify('Подключение установлено'))
-            ws.on('message', function (message) {
+            ws.on('message', async function (message) {
                 try {
                     if (/^[\],:{}\s]*$/.test(message.toString()
                         .replace(/\\["\\\/bfnrtu]/g, '@')
@@ -52,12 +53,29 @@ const websocketServer = {
                         const newMessage = JSON.parse(message)
                         if (newMessage.title == 'authentication') {
                             ws.id = newMessage.id;
-                        } else if (newMessage.title == 'data-from-app') {
-                            this.sendExceptApp(newMessage)
-                            console.log(newMessage)
-                        } else {
-                            this.sendToApp(newMessage)
-                            console.log(newMessage)
+                            if (newMessage.id == 'app') {
+                                const robot = await Robot.findOne({})
+                                websocketServer.sendToApp({robot})
+                            }
+                        } else if (ws.id == 'app') {
+                            if (newMessage.title == 'page-data-request') {
+                                if (newMessage.page == 'Робот') {
+                                    const robot = await Robot.findOne({})
+                                    websocketServer.sendToApp({robot})
+                                }
+                            }
+                            if (newMessage.title == 'data-from-app-to-robot') {
+                                Robot.findOneAndUpdate({}, {target: newMessage.target}, {new: true}, (err, doc) => {
+                                    console.log(`Данные робота изменены ${doc}`)
+                                })
+                                websocketServer.sendToRobot({target: newMessage.target})
+                            }
+                        } else if (ws.id == 'robot') {
+
+                        } else if (ws.id == 'esp') {
+
+                        } else if (ws.id == 'farm') {
+
                         }
                     } else {
                         console.log(`Получены данные не в JSON формате ${message.toString()}`)
@@ -103,17 +121,17 @@ const websocketServer = {
         })
     },
 
-    sendExceptApp(message) {
+    sendToApp(message) {
         this.chanel.clients.forEach(client => {
-            if (client.id !== 'app') {
+            if (client.id === 'app') {
                 client.send(JSON.stringify(message))
             }
         })
     },
 
-    sendToApp(message) {
+    sendToRobot(message) {
         this.chanel.clients.forEach(client => {
-            if (client.id === 'app') {
+            if (client.id === 'robot') {
                 client.send(JSON.stringify(message))
             }
         })

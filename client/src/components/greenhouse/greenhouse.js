@@ -6,7 +6,7 @@ const Greenhouse = (props) => {
         return (
             <WidgetGround
             className="farm-section"
-            key={item.id}>
+            key={index}>
                     <span className="title">Секция {index + 1}</span>
                     <div className="farm-outputs">
                         <span>Температура {item.temp}°</span>
