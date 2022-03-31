@@ -178,5 +178,60 @@ header {
     .menu {
         width: 55%;
     }
+
+    .connected-icon {
+        margin-right: 0;
+    }
+
+    .house-connect-status-on,
+    .house-connect-status-off {
+        transform: translateY(2px) scale(.9);
+    }
+
+    .farm-connect-status-on,
+    .farm-connect-status-off {
+        transform: scale(1);
+    }
+
+    .robot-connect-status-on {
+        transform: translateY(3px) scale(.9);
+    }
+
+    .robot-connect-status-off {
+        transform: translateY(10px) scale(.9);
+    }
 }
 
+@media (max-width: 400px) {
+    .button-menu{
+        margin-left: 0;
+        transform: scale(0.5);
+    }
+
+    .button-settings {
+        margin-right: 0;
+        transform: scale(0.6);
+    }
+
+    .menu {
+        width: 75%;
+    }
+
+    .house-connect-status-on,
+    .house-connect-status-off {
+        transform: translateX(15px) translateY(5px) scale(.7);
+    }
+
+    .farm-connect-status-on,
+    .farm-connect-status-off {
+        transform: translateX(15px) translateY(3px) scale(.8);
+    }
+
+    .robot-connect-status-on {
+        transform: translateX(10px) translateY(3px) scale(.7);
+    }
+
+    .robot-connect-status-off {
+        transform: translateX(10px) translateY(10px) scale(.7);
+    }
+}
