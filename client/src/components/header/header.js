@@ -58,7 +58,7 @@ class Header extends Component {
                     </ul>
                 </nav>
 
-                <div className={clazz}/>
+                <div className={`connected-icon ${clazz}`}/>
 
                 <button type="button"
                         className="button-settings">

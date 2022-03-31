@@ -102,12 +102,15 @@ header {
     background-color: #2E2E3F;
 }
 
+.connected-icon {
+    margin-right: 15px;
+    margin-left: auto;
+}
+
 .house-connect-status-on {
     background-image: url('../pictures/house-on.svg');
     width: 60px;
     height: 57px;
-    margin-left: auto;
-    margin-right: 15px;
     transform: translateY(3px) scale(1.1);
 }
 
@@ -115,8 +118,6 @@ header {
     background-image: url('../pictures/house-off.svg');
     width: 60px;
     height: 57px;
-    margin-left: auto;
-    margin-right: 15px;
     transform: translateY(3px) scale(1.1);
 }
 
@@ -124,8 +125,6 @@ header {
     background-image: url('../pictures/farm-on.svg');
     width: 57px;
     height: 57px;
-    margin-left: auto;
-    margin-right: 15px;
     transform: scale(1.15);
 }
 
@@ -133,8 +132,6 @@ header {
     background-image: url('../pictures/farm-off.svg');
     width: 57px;
     height: 57px;
-    margin-left: auto;
-    margin-right: 15px;
     transform: scale(1.15);
 }
 
@@ -142,8 +139,6 @@ header {
     background-image: url('../pictures/robot-on.svg');
     width: 64px;
     height: 64px;
-    margin-left: auto;
-    margin-right: 15px;
     transform: translateY(5px) scale(1.1);
 }
 
@@ -151,8 +146,6 @@ header {
     background-image: url('../pictures/robot-off.svg');
     width: 55px;
     height: 55px;
-    margin-left: auto;
-    margin-right: 15px;
     transform: translateY(10px) scale(1.1);
 }
 
