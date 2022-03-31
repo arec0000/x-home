@@ -62,7 +62,7 @@ class App extends Component {
     onMessage = (e) => {
         try {
             const message = JSON.parse(e.data);
-            console.log(`Получены данные: ${message}`);
+            console.log(`Получены данные: ${e.data}`);
             if (message.connectedStatus) {
                 this.setState({connectedStatus: message.connectedStatus});
             }

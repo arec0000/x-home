@@ -62,7 +62,7 @@ class ClimateWidget extends Component {
                         onBlur={this.onBlur}/>
                 </div>
                 <div>
-                    <span>Влажность {this.props.climate.sensWetness}%</span>
+                    <span>Влажность {this.props.climate.sensWet}%</span>
                     <input
                         className={this.state.wetIsValid ? 'climate__input' : 'climate__input wrong'}
                         type="text"

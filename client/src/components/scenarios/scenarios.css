@@ -6,22 +6,28 @@
     align-items: center;
 }
 
-.scenarios-control button {
-    padding: 10px 55px 10px 55px;
+.scenarios-control__select {
+    padding: 10px 25px 10px 45px;
+    text-align: center;
     font-size: 36px;
-    font-weight: bold;
+    font-weight: 700;
     border: 0;
-    background-color: rgba(231, 242, 255, 1);
     border-radius: 10px;
-    transition-property: box-shadow, background-color, outline;
-    transition-duration: 0.26s;
+    background-color: rgba(231, 242, 255, 1);
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
-.scenarios-control button:hover {
+.scenarios-control__select option {
+    text-align: start;
+    font-size: 22px;
+}
+
+.scenarios-control__select:hover {
     box-shadow: 0 2px 10px rgba(197, 207, 255, .7);
 }
 
-.scenarios-control button:focus {
+.scenarios-control__select:focus {
     outline: none;
     box-shadow: 0 2px 15px #C5CFFF;
 }
@@ -37,8 +43,8 @@
         margin-bottom: 15px;
     }
 
-    .scenarios-control button {
-        padding: 10px 0 10px 0;
+    .scenarios-control__select option {
+        text-align: center;
     }
 }
 
@@ -47,9 +53,12 @@
         padding-left: 15px;
         padding-right: 15px;
         font-size: 24px;
-
     }
-    .scenarios-control button {
+    .scenarios-control span {
+        margin-bottom: 5px;
+    }
+    .scenarios-control__select {
+        padding: 10px 0 10px 0;
         font-size: 24px;
     }
 }
