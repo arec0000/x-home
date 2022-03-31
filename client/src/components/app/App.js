@@ -59,8 +59,21 @@ class App extends Component {
     }
 
     onMessage = (e) => {
-        const message = JSON.parse(e.data);
-        console.log(message);
+        try {
+            const message = JSON.parse(e.data);
+            console.log(`Получены данные: ${message}`);
+            if (message.esp) {
+
+            }
+            if (message.farm) {
+
+            }
+            if (message.robot) {
+                this.setState({robot: message.robot});
+            }
+        } catch (err) {
+            console.error(`Ошибка при получении данных: ${err.message}`);
+        }
     }
 
     componentDidMount() {
