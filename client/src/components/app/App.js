@@ -17,7 +17,7 @@ class App extends Component {
         this.state = {
             currentPage: localStorage.getItem('lastPage') || 'Главная',
             pages: ['Главная', 'Теплица', 'Робот'],
-            connectedStatus: {esp: true, greenhouse: true, robot: true},
+            connectedStatus: {esp: false, greenhouse: false, robot: false},
             climate: {sensTemp: 27.3, sensWet: 40, wishTemp: 29, wishWet: 55},
             doorControl: false,
             lightButtons: [
@@ -63,11 +63,18 @@ class App extends Component {
         try {
             const message = JSON.parse(e.data);
             console.log(`Получены данные: ${message}`);
+            if (message.connectedStatus) {
+                this.setState({connectedStatus: message.connectedStatus});
+            }
             if (message.esp) {
-
+                this.setState({
+                    climate: message.esp.climate,
+                    doorControl: message.esp.doorControl,
+                    lightButtons: message.esp.lightButtons
+                });
             }
             if (message.farm) {
-
+                this.setState({farm: message.farm});
             }
             if (message.robot) {
                 this.setState({robot: message.robot});
