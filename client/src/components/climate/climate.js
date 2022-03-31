@@ -37,8 +37,8 @@ class ClimateWidget extends Component {
             this.setState({tempIsValid: true});
             this.props.sendData(JSON.stringify({
                 title: 'data-from-app-to-esp',
-                climate: {sensTemp: +this.state.sensTemp,
-                          sensWet: +this.state.sensWet,
+                climate: {sensTemp: this.props.climate.sensTemp,
+                          sensWet: this.props.climate.sensWet,
                           wishTemp: +this.state.wishTemp,
                           wishWet: +this.state.wishWet}
             }));
@@ -50,8 +50,8 @@ class ClimateWidget extends Component {
             this.setState({wetIsValid: true});
             this.props.sendData(JSON.stringify({
                 title: 'data-from-app-to-esp',
-                climate: {sensTemp: +this.state.sensTemp,
-                          sensWet: +this.state.sensWet,
+                climate: {sensTemp: this.props.climate.sensTemp,
+                          sensWet: this.props.climate.sensWet,
                           wishTemp: +this.state.wishTemp,
                           wishWet: +this.state.wishWet}
             }));
