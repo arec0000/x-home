@@ -27,7 +27,7 @@ class App extends Component {
                 {name: 'территория', shine: false, id: 4},
                 {name: 'гараж', shine: false, id: 5}
             ],
-            robot: {state: 0, current: 1, target: 5},
+            robot: {state: false, current: 1, target: 5},
             robotRooms: [
                 {name: 'Гараж', id: 1},
                 {name: 'Спальня', id: 2},

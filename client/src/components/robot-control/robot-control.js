@@ -30,10 +30,10 @@ class RobotControl extends Component {
             }
 
             let iconClass = '';
-            if (item.id === robot.current && robot.state === 0) {
+            if (item.id === robot.current && !robot.state) {
                 iconClass = 'robot-standing';
             }
-            if (item.id === robot.current && robot.state === 1) {
+            if (item.id === robot.current && robot.state) {
                 iconClass = 'robot-moving';
             }
             if (item.id !== robot.current && item.id === robot.target) {
@@ -44,7 +44,8 @@ class RobotControl extends Component {
                 <button
                     key={item.id}
                     className={clazz}
-                    onClick={() => this.onClick(item.id)}>
+                    onClick={() => this.onClick(item.id)}
+                    disabled={robot.state}>
                         {item.name}
                         <div className={iconClass}/>
                 </button>
