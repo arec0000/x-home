@@ -47,6 +47,7 @@ class App extends Component {
     changePage = (page) => {
         this.setState({currentPage: page});
         localStorage.setItem('lastPage', page);
+        this.sendData(JSON.stringify({title: 'page-data-request', page}));
     }
 
     sendData = (data) => {
@@ -77,7 +78,9 @@ class App extends Component {
     }
 
     componentDidMount() {
-        socket.connect('ws://localhost:5000', this.onMessage);
+        if (!socket.chanel) {
+            socket.connect('ws://localhost:5000', this.onMessage);
+        }
     }
 
     render() {
