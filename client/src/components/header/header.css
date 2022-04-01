@@ -149,6 +149,14 @@ header {
     transform: translateY(10px) scale(1.1);
 }
 
+.disconnected {
+    background-image: url('../pictures/disconnected.svg');
+    margin-right: 10px;
+    width: 79px;
+    height: 57px;
+    transform: translateY(7px) scale(.9);
+}
+
 @media (max-width: 1200px) {
     .menu {
         width: 35%;
@@ -196,6 +204,10 @@ header {
     .robot-connect-status-off {
         transform: translateY(10px) scale(.9);
     }
+
+    .disconnected {
+        transform: translateY(7px) scale(.8);
+    }
 }
 
 @media (max-width: 475px) {
@@ -229,5 +241,9 @@ header {
 
     .robot-connect-status-off {
         transform: translateX(10px) translateY(10px) scale(.7);
+    }
+
+    .disconnected {
+        transform: translateX(15px) translateY(7px) scale(.6);
     }
 }

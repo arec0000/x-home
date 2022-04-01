@@ -7,7 +7,7 @@
         - При подключении отправляет авторизационное сообщение
 */
 class Socket {
-    connect(link, onMessage) {
+    connect(link, onMessage, onClose) {
         const socket = new WebSocket(link);
 
         socket.addEventListener('open', () => {
@@ -19,12 +19,13 @@ class Socket {
         socket.addEventListener('message', onMessage);
 
         socket.addEventListener('close', e => {
+            onClose();
             if (e.wasClean) {
                 console.log('Соединение закрыто');
             } else {
                 console.log('Соединение прервано');
             }
-            setTimeout(() => this.connect(link, onMessage), 3000);
+            setTimeout(() => this.connect(link, onMessage, onClose), 3000);
         });
 
         socket.addEventListener('error', err => {

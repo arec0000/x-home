@@ -18,7 +18,7 @@ class App extends Component {
         this.state = {
             currentPage: localStorage.getItem('lastPage') || 'Главная',
             pages: ['Главная', 'Внешняя теплица', 'Внутренняя теплица', 'Робот'],
-            connectedStatus: {esp: false, greenhouse: false, robot: false},
+            connectedStatus: null,
             climate: {sensTemp: 27.3, sensWet: 40, wishTemp: 29, wishWet: 55},
             doorControl: false,
             lightButtons: [
@@ -85,9 +85,13 @@ class App extends Component {
         }
     }
 
+    onClose = () => {
+        this.setState({connectedStatus: null});
+    }
+
     componentDidMount() {
         if (!socket.chanel) {
-            socket.connect('ws://localhost:5000', this.onMessage);
+            socket.connect('ws://localhost:5000', this.onMessage, this.onClose);
         }
     }
 

@@ -19,19 +19,22 @@ class Header extends Component {
     render() {
         const {currentPage, pages, connectedStatus, changePage} = this.props;
         let clazz;
-
-        switch(currentPage) {
-            case 'Главная':
-                clazz = connectedStatus.esp ? 'house-connect-status-on' : 'house-connect-status-off';
-                break;
-            case 'Внешняя теплица':
-                clazz = connectedStatus.greenhouse ? 'farm-connect-status-on' : 'farm-connect-status-off';
-                break;
-            case 'Робот':
-                clazz = connectedStatus.robot ? 'robot-connect-status-on' : 'robot-connect-status-off';
-                break;
-            default:
-                clazz = '';
+        if (connectedStatus) {
+            switch(currentPage) {
+                case 'Главная':
+                    clazz = connectedStatus.esp ? 'house-connect-status-on' : 'house-connect-status-off';
+                    break;
+                case 'Внешняя теплица':
+                    clazz = connectedStatus.greenhouse ? 'farm-connect-status-on' : 'farm-connect-status-off';
+                    break;
+                case 'Робот':
+                    clazz = connectedStatus.robot ? 'robot-connect-status-on' : 'robot-connect-status-off';
+                    break;
+                default:
+                    clazz = '';
+            }
+        } else {
+            clazz = 'disconnected';
         }
 
         const links = pages.map(item => (
