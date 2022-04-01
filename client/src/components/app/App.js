@@ -8,6 +8,7 @@ import LightControl from '../light/light';
 import ScenariosControl from '../scenarios/scenarios';
 import RobotControl from '../robot-control/robot-control';
 import Greenhouse from '../greenhouse/greenhouse';
+import GreenhouseInside from '../greenhouse-Inside/greenhouse-inside';
 
 import './App.css';
 
@@ -16,7 +17,7 @@ class App extends Component {
         super(props);
         this.state = {
             currentPage: localStorage.getItem('lastPage') || 'Главная',
-            pages: ['Главная', 'Теплица', 'Робот'],
+            pages: ['Главная', 'Внешняя теплица', 'Внутренняя теплица', 'Робот'],
             connectedStatus: {esp: false, greenhouse: false, robot: false},
             climate: {sensTemp: 27.3, sensWet: 40, wishTemp: 29, wishWet: 55},
             doorControl: false,
@@ -96,11 +97,16 @@ class App extends Component {
 
         const Page = () => {
             switch (currentPage) {
-                case 'Теплица':
+                case 'Внешняя теплица':
                     return <ul className='widgets'>
                              <Greenhouse
                                 key={1}
                                 farm={farm}/>
+                           </ul>
+                case 'Внутренняя теплица':
+                    return <ul className='widgets'>
+                             <GreenhouseInside
+                                key={1}/>
                            </ul>
                 case 'Робот':
                     return <RobotControl
