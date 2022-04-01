@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const ws = require('ws');
+const { findOne } = require('./schemes/esp');
 
 const Esp = require('./schemes/esp')
 const Farm = require('./schemes/farm')
@@ -100,6 +101,10 @@ const websocketServer = {
                             }
                         } else if (ws.id == 'app') {
                             if (newMessage.title == 'page-data-request') {
+                                if (newMessage.page == 'Главная') {
+                                    const esp = await Esp.findOne({})
+                                    websocketServer.sendToApp({esp})
+                                }
                                 if (newMessage.page == 'Робот') {
                                     const robot = await Robot.findOne({})
                                     websocketServer.sendToApp({robot})
@@ -121,6 +126,9 @@ const websocketServer = {
                                         console.log(`Данные датчиков света изменены ${doc}`)
                                     })
                                 }
+                                const data = await Esp.findOne({})
+                                websocketServer.sendToEsp(data)
+                                console.log(`Отправлены данные на esp ${data}`)
                             }
                             if (newMessage.title == 'data-from-app-to-robot') {
                                 Robot.findOneAndUpdate({}, {target: newMessage.target}, {new: true}, (err, doc) => {
@@ -128,12 +136,15 @@ const websocketServer = {
                                 })
                                 websocketServer.sendToRobot({target: newMessage.target})
                             }
-                        } else if (ws.id == 'robot') {
-
                         } else if (ws.id == 'esp') {
 
                         } else if (ws.id == 'farm') {
 
+                        } else if (ws.id == 'robot') {
+
+                        } else {
+                            ws.send(JSON.stringify({title: 'error', message: 'Пошел в лес, ты не авторизован'}))
+                            console.error(`Неавторизованный пользователь пошел в лес и прислал данные ${newMessage}`)
                         }
                     } else {
                         console.log(`Получены данные не в JSON формате ${message.toString()}`)
@@ -182,6 +193,14 @@ const websocketServer = {
     sendToApp(message) {
         this.chanel.clients.forEach(client => {
             if (client.id === 'app') {
+                client.send(JSON.stringify(message))
+            }
+        })
+    },
+
+    sendToEsp(message) {
+        this.chanel.clients.forEach(client => {
+            if (client.id === 'esp') {
                 client.send(JSON.stringify(message))
             }
         })
