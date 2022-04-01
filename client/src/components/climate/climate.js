@@ -35,26 +35,26 @@ class ClimateWidget extends Component {
     onBlur = (e) => {
         if (e.target.getAttribute('data-input') === 'wishTemp' && e.target.value >= 15 && e.target.value <= 35) {
             this.setState({tempIsValid: true});
-            this.props.sendData(JSON.stringify({
+            this.props.sendData({
                 title: 'data-from-app-to-esp',
                 climate: {sensTemp: this.props.climate.sensTemp,
                           sensWet: this.props.climate.sensWet,
                           wishTemp: +this.state.wishTemp,
                           wishWet: +this.state.wishWet}
-            }));
+            });
         } else if (e.target.getAttribute('data-input') === 'wishTemp') {
             this.setState({tempIsValid: false});
         }
 
         if (e.target.getAttribute('data-input') === 'wishWet' && e.target.value > 0) {
             this.setState({wetIsValid: true});
-            this.props.sendData(JSON.stringify({
+            this.props.sendData({
                 title: 'data-from-app-to-esp',
                 climate: {sensTemp: this.props.climate.sensTemp,
                           sensWet: this.props.climate.sensWet,
                           wishTemp: +this.state.wishTemp,
                           wishWet: +this.state.wishWet}
-            }));
+            });
         } else if (e.target.getAttribute('data-input') === 'wishWet') {
             this.setState({wetIsValid: false});
         }

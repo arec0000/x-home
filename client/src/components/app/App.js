@@ -27,6 +27,10 @@ class App extends Component {
                 {name: 'территория', shine: false, id: 4},
                 {name: 'гараж', shine: false, id: 5}
             ],
+            farm: [
+                {temp: 27, humidity: 40},
+                {temp: 24, humidity: 74}
+            ],
             robot: {state: false, current: 1, target: 5},
             robotRooms: [
                 {name: 'Гараж', id: 1},
@@ -36,10 +40,6 @@ class App extends Component {
                 {name: 'Корридор', id: 5},
                 {name: 'Гардеробная', id: 6},
                 {name: 'Холл', id: 7}
-            ],
-            farm: [
-                {temp: 27, humidity: 40},
-                {temp: 24, humidity: 74}
             ]
         }
     }
@@ -47,13 +47,13 @@ class App extends Component {
     changePage = (page) => {
         this.setState({currentPage: page});
         localStorage.setItem('lastPage', page);
-        this.sendData(JSON.stringify({title: 'page-data-request', page}));
+        this.sendData({title: 'page-data-request', page});
     }
 
     sendData = (data) => {
         try {
-            socket.chanel.send(data);
-            console.log(`Отправлены данные: ${data}`);
+            socket.chanel.send(JSON.stringify(data));
+            console.log(`Отправлены данные: ${JSON.stringify(data)}`);
         } catch (err) {
             console.error(`Ошибка при отправке данных: ${err.message}`);
         }
@@ -91,7 +91,8 @@ class App extends Component {
     }
 
     render() {
-        const {currentPage, pages, connectedStatus, climate, doorControl, lightButtons, farm} = this.state;
+        const {currentPage, pages, connectedStatus, climate,
+               doorControl, lightButtons, farm, robot, robotRooms} = this.state;
 
         const Page = () => {
             switch (currentPage) {
@@ -103,8 +104,9 @@ class App extends Component {
                            </ul>
                 case 'Робот':
                     return <RobotControl
-                                robot={this.state.robot}
-                                robotRooms={this.state.robotRooms}
+                                robot={robot}
+                                robotRooms={robotRooms}
+                                connectedStatus={connectedStatus}
                                 sendData={this.sendData}/>
                 default: //Главная
                     return (

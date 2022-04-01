@@ -19,7 +19,7 @@ class LightControl extends Component {
             )
         }), resolve))
             .then(() =>
-                this.props.sendData(JSON.stringify({title: 'data-from-app-to-esp', lightButtons: this.state.lightButtons}))
+                this.props.sendData({title: 'data-from-app-to-esp', lightButtons: this.state.lightButtons})
             );
     }
 

@@ -11,9 +11,13 @@ class RobotControl extends Component {
     }
 
     onClick = (id) => {
-        if (id !== this.state.robot.target) {
+        if (id !== this.state.robot.target && id !== this.state.robot.current && this.props.connectedStatus.robot) {
+            this.setState({robot: {state: true, current: this.state.robot.current, target: id}});
+            this.props.sendData({title: 'data-from-app-to-robot', target: id});
+        }
+        if (id !== this.state.robot.target && id !== this.state.robot.current && !this.props.connectedStatus.robot) {
             this.setState({robot: {...this.state.robot, target: id}});
-            this.props.sendData(JSON.stringify({title: 'data-from-app-to-robot', target: id}));
+            console.error('Робот не в сети, отправка данных невозможна!');
         }
     }
 
