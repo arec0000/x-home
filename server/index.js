@@ -2,15 +2,51 @@ const express = require('express');
 const mongoose = require('mongoose');
 const ws = require('ws');
 
+const Esp = require('./schemes/esp')
+const Farm = require('./schemes/farm')
+const Robot = require('./schemes/robot')
 
-const Robot = require('./schemes/robot');
 
 mongoose.connect('mongodb://localhost:27017/x-home', {useNewUrlParser: true, useUnifiedTopology: true})
 
+        // Esp.deleteOne({}, function(err, result) {
+
+        // })
+
 async function init() {
+    Esp.findOne({}, (err, doc) => {
+        if (!doc) {
+            Esp.create({
+                climate: {sensTemp: 30.3, sensWet: 40, wishTemp: 29, wishWet: 55},
+                doorControl: false,
+                lightButtons: [
+                    {name: 'спальня', shine: true, id: 1},
+                    {name: 'кухня', shine: false, id: 2},
+                    {name: 'гостинная', shine: false, id: 3},
+                    {name: 'территория', shine: false, id: 4},
+                    {name: 'гараж', shine: false, id: 5}
+                ]
+            })
+            console.log('Созданы дефолтные данные с esp, по приказу Никиты')
+        } else {
+            console.log(doc)
+        }
+    })
+    Farm.find({}, (err, doc) => {
+        if (!doc[0]) {
+            Farm.create({temp: 30, humidity: 40}, (err, doc) => {
+                console.log('Создана дефолтная секция фермы, по приказу Никиты')
+            });
+            Farm.create({temp: 24, humidity: 74}, (err, doc) => {
+                console.log('Создана дефолтная секция фермы, по приказу Никиты')
+            });
+        } else {
+            console.log(doc)
+        }
+    })
     Robot.findOne({}, (err, doc) => {
         if (!doc) {
-            Robot.create({state: true, current: 1, target: 1}, (err, doc) => {
+            Robot.create({state: false, current: 1, target: 1}, (err, doc) => {
                 console.log('Создан дефолтный объект робота, по приказу Никиты')
             });
         } else {
@@ -19,6 +55,7 @@ async function init() {
     })
 }
 init();
+
 
 // const app = express()
 
@@ -54,6 +91,10 @@ const websocketServer = {
                         if (newMessage.title == 'authentication') {
                             ws.id = newMessage.id;
                             if (newMessage.id == 'app') {
+                                const esp = await Esp.findOne({})
+                                websocketServer.sendToApp({esp})
+                                const farm = await Farm.find({})
+                                websocketServer.sendToApp({farm})
                                 const robot = await Robot.findOne({})
                                 websocketServer.sendToApp({robot})
                             }
@@ -62,6 +103,23 @@ const websocketServer = {
                                 if (newMessage.page == 'Робот') {
                                     const robot = await Robot.findOne({})
                                     websocketServer.sendToApp({robot})
+                                }
+                            }
+                            if (newMessage.title == 'data-from-app-to-esp') {
+                                if (newMessage.climate) {
+                                    Esp.findOneAndUpdate({}, {climate: newMessage.climate}, {new: true}, (err, doc) => {
+                                        console.log(`Данные датчиков климата изменены ${doc}`)
+                                    })
+                                }
+                                if (newMessage.doorControl) {
+                                    Esp.findOneAndUpdate({}, {doorControl: newMessage.doorControl}, {new: true}, (err, doc) => {
+                                        console.log(`Данные датчиков двери изменены ${doc}`)
+                                    })
+                                }
+                                if (newMessage.lightButtons) {
+                                    Esp.findOneAndUpdate({}, {lightButtons: newMessage.lightButtons}, {new: true}, (err, doc) => {
+                                        console.log(`Данные датчиков света изменены ${doc}`)
+                                    })
                                 }
                             }
                             if (newMessage.title == 'data-from-app-to-robot') {
@@ -83,8 +141,8 @@ const websocketServer = {
                     }
 
                 } catch(error) {
-                    console.log(`Ошибка при получении данных, Никита плохой ${error.message}`)
-                    ws.send(JSON.stringify({title: 'error', message: `Ошибка при получении данных, Никита плохой ${error.message}`}))
+                    console.log(`Ошибка при получении данных ${error.message}`)
+                    ws.send(JSON.stringify({title: 'error', message: `Ошибка при получении данных ${error.message}`}))
                 }
             })
 
