@@ -10,7 +10,7 @@ const Robot = require('./schemes/robot')
 
 mongoose.connect('mongodb://localhost:27017/x-home', {useNewUrlParser: true, useUnifiedTopology: true})
 
-        // Esp.deleteOne({}, function(err, result) {
+        // Farm.deleteOne({}, function(err, result) {
 
         // })
 
@@ -21,7 +21,7 @@ async function init() {
                 climate: {sensTemp: 30.3, sensWet: 40, wishTemp: 29, wishWet: 55},
                 doorControl: false,
                 lightButtons: [
-                    {name: 'спальня', shine: true, id: 1},
+                    {name: 'спальня', shine: false, id: 1},
                     {name: 'кухня', shine: false, id: 2},
                     {name: 'гостинная', shine: false, id: 3},
                     {name: 'территория', shine: false, id: 4},
@@ -35,10 +35,10 @@ async function init() {
     })
     Farm.find({}, (err, doc) => {
         if (!doc[0]) {
-            Farm.create({temp: 30, humidity: 40}, (err, doc) => {
+            Farm.create({id: 1, temp: 30, humidity: 40}, (err, doc) => {
                 console.log('Создана дефолтная секция фермы, по приказу Никиты')
             });
-            Farm.create({temp: 24, humidity: 74}, (err, doc) => {
+            Farm.create({id: 2, temp: 24, humidity: 74}, (err, doc) => {
                 console.log('Создана дефолтная секция фермы, по приказу Никиты')
             });
         } else {
@@ -98,6 +98,17 @@ const websocketServer = {
                                 websocketServer.sendToApp({farm})
                                 const robot = await Robot.findOne({})
                                 websocketServer.sendToApp({robot})
+                                console.log('Приложение подключено')
+                            }
+                            if (newMessage.id == 'esp') {
+                                const esp = await Esp.findOne({})
+                                websocketServer.sendToEsp(esp)
+                                console.log('esp подключено')
+                            }
+                            if (newMessage.id == 'robot') {
+                                Robot.findOneAndUpdate({}, {state: false, current: 1, target: 1}, {new: true}, (err, doc) => {
+                                    console.log(`Робот подключен, данные изменены на дефолтные ${doc}`)
+                                })
                             }
                         } else if (ws.id == 'app') {
                             if (newMessage.title == 'page-data-request') {
@@ -112,23 +123,41 @@ const websocketServer = {
                             }
                             if (newMessage.title == 'data-from-app-to-esp') {
                                 if (newMessage.climate) {
-                                    Esp.findOneAndUpdate({}, {climate: newMessage.climate}, {new: true}, (err, doc) => {
-                                        console.log(`Данные датчиков климата изменены ${doc}`)
+                                    new Promise(resolve => {
+                                        Esp.findOneAndUpdate({}, {climate: newMessage.climate}, {new: true}, (err, doc) => {
+                                            resolve()
+                                            console.log(`Данные датчиков климата изменены ${doc}`)
+                                        })
+                                    }).then(async () => {
+                                        const esp = await Esp.findOne({})
+                                        websocketServer.sendToEsp(esp)
+                                        console.log(`Отправлены данные на esp, изменён климат ${esp}`)
                                     })
                                 }
-                                if (newMessage.doorControl) {
-                                    Esp.findOneAndUpdate({}, {doorControl: newMessage.doorControl}, {new: true}, (err, doc) => {
-                                        console.log(`Данные датчиков двери изменены ${doc}`)
+                                if (newMessage.doorControl !== undefined) {
+                                    new Promise(resolve => {
+                                        Esp.findOneAndUpdate({}, {doorControl: newMessage.doorControl}, {new: true}, (err, doc) => {
+                                            resolve()
+                                            console.log(`Данные датчиков двери изменены ${doc}`)
+                                        })
+                                    }).then(async () => {
+                                        const esp = await Esp.findOne({})
+                                        websocketServer.sendToEsp(esp)
+                                        console.log(`Отправлены данные на esp, изменёно состояние двери ${esp}`)
                                     })
                                 }
                                 if (newMessage.lightButtons) {
-                                    Esp.findOneAndUpdate({}, {lightButtons: newMessage.lightButtons}, {new: true}, (err, doc) => {
-                                        console.log(`Данные датчиков света изменены ${doc}`)
+                                    new Promise(resolve => {
+                                        Esp.findOneAndUpdate({}, {lightButtons: newMessage.lightButtons}, {new: true}, (err, doc) => {
+                                            resolve()
+                                            console.log(`Данные датчиков света изменены ${doc}`)
+                                        })
+                                    }).then(async () => {
+                                        const esp = await Esp.findOne({})
+                                        websocketServer.sendToEsp(esp)
+                                        console.log(`Отправлены данные на esp, изменён свет ${esp}`)
                                     })
                                 }
-                                const data = await Esp.findOne({})
-                                websocketServer.sendToEsp(data)
-                                console.log(`Отправлены данные на esp ${data}`)
                             }
                             if (newMessage.title == 'data-from-app-to-robot') {
                                 Robot.findOneAndUpdate({}, {target: newMessage.target}, {new: true}, (err, doc) => {
@@ -137,11 +166,21 @@ const websocketServer = {
                                 websocketServer.sendToRobot({target: newMessage.target})
                             }
                         } else if (ws.id == 'esp') {
-
+                            Esp.findOneAndUpdate({}, newMessage, {new: true}, (err, doc) => {
+                                websocketServer.sendToApp({esp: doc})
+                                console.log(`Полученны данные от esp ${newMessage}`)
+                            })
                         } else if (ws.id == 'farm') {
-
+                            newMessage.data.forEach(item => {
+                                Farm.findOneAndUpdate({id: item.id}, item)
+                            })
+                            websocketServer.sendToApp({farm: newMessage.data})
+                            console.log(`Полученны данные от теплицы ${newMessage}`)
                         } else if (ws.id == 'robot') {
-
+                            Robot.findOneAndUpdate({}, newMessage, {new: true}, (err, doc) => {
+                                websocketServer.sendToApp({robot: doc})
+                                console.log(`Полученны данные от робота ${newMessage}`)
+                            })
                         } else {
                             ws.send(JSON.stringify({title: 'error', message: 'Пошел в лес, ты не авторизован'}))
                             console.error(`Неавторизованный пользователь пошел в лес и прислал данные ${newMessage}`)
@@ -178,7 +217,7 @@ const websocketServer = {
                     client.ping();
                 }
             })
-        }, 1000)
+        }, 3000)
 
         this.chanel.on('close', () => {
             clearInterval(closeFallenConections)
