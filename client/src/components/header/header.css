@@ -61,7 +61,7 @@ header {
     position: fixed;
     z-index: 2;
     top: 0px;
-    width: 25%;
+    width: 30%;
     height: 100%;
     transform: translateX(-100%);
     background-color: #414157;
@@ -76,7 +76,7 @@ header {
     margin: 0;
     padding: 0;
     margin-top: 15px;
-    font-size: 32px;
+    font-size: calc((100vw - 350px)/(1280 - 350) * (32 - 22) + 22px);
     color: #FDFDFD;
 }
 
@@ -151,21 +151,17 @@ header {
 
 @media (max-width: 1200px) {
     .menu {
-        width: 40%;
+        width: 35%;
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 950px) {
     .menu {
-        width: 50%;
-    }
-
-    .pagesList li {
-        font-size: 40px;
+        width: 45%;
     }
 }
 
-@media (max-width: 630px) {
+@media (max-width: 640px) {
     .button-menu{
         transform: scale(0.8);
     }
@@ -176,7 +172,7 @@ header {
     }
 
     .menu {
-        width: 55%;
+        width: 65%;
     }
 
     .connected-icon {
@@ -202,7 +198,7 @@ header {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 475px) {
     .button-menu{
         margin-left: 0;
         transform: scale(0.5);
@@ -214,7 +210,7 @@ header {
     }
 
     .menu {
-        width: 75%;
+        width: 80%;
     }
 
     .house-connect-status-on,

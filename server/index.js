@@ -6,6 +6,7 @@ const { findOne } = require('./schemes/esp');
 const Esp = require('./schemes/esp')
 const Farm = require('./schemes/farm')
 const Robot = require('./schemes/robot')
+const ConnectedStatus = require('./schemes/connected')
 
 
 mongoose.connect('mongodb://localhost:27017/x-home', {useNewUrlParser: true, useUnifiedTopology: true})
@@ -15,6 +16,18 @@ mongoose.connect('mongodb://localhost:27017/x-home', {useNewUrlParser: true, use
         // })
 
 async function init() {
+    ConnectedStatus.findOne({}, (err, doc) => {
+        if (!doc) {
+            ConnectedStatus.create({
+                esp: false,
+                greenhouse: false,
+                robot: false
+            })
+            console.log('Созданы дефолтные данные для соединения, по приказу Никиты')
+        } else {
+            console.log(doc)
+        }
+    })
     Esp.findOne({}, (err, doc) => {
         if (!doc) {
             Esp.create({
@@ -91,6 +104,12 @@ const websocketServer = {
                         const newMessage = JSON.parse(message)
                         if (newMessage.title == 'authentication') {
                             ws.id = newMessage.id;
+                            new Promise(resolve =>
+                                ConnectedStatus.findOneAndUpdate({}, {[newMessage.id]: true}, () => resolve())
+                            ).then(async () => {
+                                const connectedStatus = await ConnectedStatus.findOne({})
+                                websocketServer.sendToApp({connectedStatus})
+                            })
                             if (newMessage.id == 'app') {
                                 const esp = await Esp.findOne({})
                                 websocketServer.sendToApp({esp})
@@ -104,6 +123,7 @@ const websocketServer = {
                                 const esp = await Esp.findOne({})
                                 websocketServer.sendToEsp(esp)
                                 console.log('esp подключено')
+
                             }
                             if (newMessage.id == 'robot') {
                                 Robot.findOneAndUpdate({}, {state: false, current: 1, target: 1}, {new: true}, (err, doc) => {
@@ -200,6 +220,12 @@ const websocketServer = {
 
             ws.on('close', () => {
                 console.log('Пользователь отключился')
+                new Promise(resolve =>
+                    ConnectedStatus.findOneAndUpdate({}, {[ws.id]: false}, () => resolve())
+                ).then(async () => {
+                    const connectedStatus = await ConnectedStatus.findOne({})
+                    websocketServer.sendToApp({connectedStatus})
+                })
             })
 
             ws.on('error', () => {
@@ -228,6 +254,17 @@ const websocketServer = {
             console.log(`Ошибка ${error.message}`)
         })
     },
+
+    // checkСonnectedDevices() {
+    //     new Promise(resolve =>
+    //         ConnectedStatus.findOneAndUpdate({}, {esp: false, greenhouse: false, robot: false}, () => resolve())
+    //     ).then(() => {
+    //         this.chanel.clients.forEach(client => {
+    //             ConnectedStatus.findOneAndUpdate({}, {[client.id]: true})
+    //         })
+    //         console.log(this)
+    //     })
+    // },
 
     sendToApp(message) {
         this.chanel.clients.forEach(client => {

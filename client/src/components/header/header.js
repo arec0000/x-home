@@ -24,7 +24,7 @@ class Header extends Component {
             case 'Главная':
                 clazz = connectedStatus.esp ? 'house-connect-status-on' : 'house-connect-status-off';
                 break;
-            case 'Теплица':
+            case 'Внешняя теплица':
                 clazz = connectedStatus.greenhouse ? 'farm-connect-status-on' : 'farm-connect-status-off';
                 break;
             case 'Робот':
