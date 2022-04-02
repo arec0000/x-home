@@ -1,5 +1,7 @@
 const ws = require('ws');
 const mongoose = require('mongoose');
+const {spawn} = require('child_process')
+const Jimp = require('jimp')
 
 const Esp = require('./schemes/esp')
 const Farm = require('./schemes/farm')
@@ -160,13 +162,29 @@ class WebsocketServer {
             }
         } else if (client.id == 'esp') {
             if (newMessage.title == 'data-from-esp-to-app') {
-                Esp.findOneAndUpdate({}, newMessage, {new: true}, (err, doc) => {
+                Esp.findOneAndUpdate({}, newMessage.data, {new: true}, (err, doc) => {
                     this.sendById('app', {esp: doc})
                     console.log(`Полученны данные от esp ${newMessage}`)
                 })
             }
             if (newMessage.title == 'data-from-esp-to-cv') {
+                Jimp.read(newMessage.data).then(image => {
+                    image.write('image.png')
+                    const cv = spawn('python', ['cv.py'])
+                    cv.stdout.on('data', (data) => {
+                        console.log(`Данные из python ${data}`)
+                        if (data == 'recognized') {
+                            Esp.findOneAndUpdate({}, {doorControl: false}, {new: true}, (err, doc) => {
+                                this.sendById('esp', doc)
+                                this.sendById('app', {esp: doc})
+                                console.log('Ваше лицо распознано')
+                            })
+                        } else {
+                            console.log('Ваше лицо не распознано')
+                        }
+                    })
 
+                })
             }
         } else if (client.id == 'greenhouse') {
             newMessage.data.forEach(item => {
