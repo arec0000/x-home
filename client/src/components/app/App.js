@@ -91,7 +91,7 @@ class App extends Component {
 
     componentDidMount() {
         if (!socket.chanel) {
-            socket.connect('ws://localhost:5000', this.onMessage, this.onClose);
+            socket.connect('ws://81.163.29.85:5000', this.onMessage, this.onClose);
         }
     }
 

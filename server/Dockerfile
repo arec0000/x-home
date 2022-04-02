@@ -8,5 +8,5 @@ COPY package*.json ./
 RUN npm install
 # копируем исходный код
 COPY . .
-EXPOSE 5000
+EXPOSE 3000 5000 27017
 CMD [ "node", "index.js" ]

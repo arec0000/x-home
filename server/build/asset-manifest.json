@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.a87ec769.css",
+    "main.js": "/static/js/main.f89fbb90.js",
+    "static/media/robot-on.svg": "/static/media/robot-on.7dba516c8d5ac7166a4d.svg",
+    "static/media/house-on.svg": "/static/media/house-on.0f8e3a50194c388e9a13.svg",
+    "static/media/robot-off.svg": "/static/media/robot-off.9d065af98b5567d263e1.svg",
+    "static/media/farm-on.svg": "/static/media/farm-on.1c59bf5c7b854651a880.svg",
+    "static/media/farm-off.svg": "/static/media/farm-off.ca83b1dd0c76c50838b8.svg",
+    "static/media/robot-moving.svg": "/static/media/robot-moving.85b31f28d367310692e4.svg",
+    "static/media/robot-standing.svg": "/static/media/robot-standing.2359900b599c12121ab0.svg",
+    "static/media/house-off.svg": "/static/media/house-off.66b483460f5f2aff4459.svg",
+    "static/media/target.svg": "/static/media/target.9d52622dfc6977271a83.svg",
+    "static/media/target-rings.svg": "/static/media/target-rings.7151f594a708db793525.svg",
+    "static/media/disconnected.svg": "/static/media/disconnected.cccf48cf7d8a90198d09.svg",
+    "static/media/wind.svg": "/static/media/wind.1aa8c3f01e0f7e74f778.svg",
+    "static/media/settings.svg": "/static/media/settings.cb72c197c302b1067858.svg",
+    "index.html": "/index.html",
+    "static/media/menu.svg": "/static/media/menu.56bfe14acadff9ed7fff.svg",
+    "main.a87ec769.css.map": "/static/css/main.a87ec769.css.map",
+    "main.f89fbb90.js.map": "/static/js/main.f89fbb90.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a87ec769.css",
+    "static/js/main.f89fbb90.js"
+  ]
+}

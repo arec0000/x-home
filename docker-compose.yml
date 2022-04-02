@@ -4,11 +4,12 @@ volumes:
     mongodb_volume:
 
 services:
-    # server:
-    #   build: server/
-    #   restart: always
-    #   ports:
-    #     - 5000:5000
+  server:
+    build: server/
+    restart: always
+    ports:
+      - 5000:5000
+      - 3000:3000
 
   # nginx:
   #   build: client/
