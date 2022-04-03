@@ -19,18 +19,18 @@ class App extends Component {
             currentPage: localStorage.getItem('lastPage') || 'Главная',
             pages: ['Главная', 'Внешняя теплица', 'Внутренняя теплица', 'Робот'],
             connectedStatus: null,
-            climate: {sensTemp: 27.3, sensWet: 40, wishTemp: 29, wishWet: 55},
+            climate: {sensTemp: 15, sensWet: 45, wishTemp: 0, wishWet: 0},
             doorControl: false,
             lightButtons: [
-                {name: 'спальня', shine: true, id: 1},
+                {name: 'спальня', shine: false, id: 1},
                 {name: 'кухня', shine: false, id: 2},
                 {name: 'гостинная', shine: false, id: 3},
                 {name: 'территория', shine: false, id: 4},
                 {name: 'гараж', shine: false, id: 5}
             ],
             farm: [
-                {temp: 27, humidity: 40},
-                {temp: 24, humidity: 74}
+                {id: 1, temp: 15, humidity: 45},
+                {id: 2, temp: 15, humidity: 45}
             ],
             robot: {state: false, current: 1, target: 5},
             robotRooms: [
