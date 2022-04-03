@@ -1,6 +1,6 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const websocketServer = require('./websocketServer')
+import express from 'express'
+import mongoose from 'mongoose'
+import websocketServer from './websocketServer.js'
 
 mongoose.connect('mongodb://81.163.29.85:27017/x-home', {useNewUrlParser: true, useUnifiedTopology: true})
 

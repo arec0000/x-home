@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const ConnectedStatus = mongoose.Schema({
     esp: {type: Boolean, require: true},
@@ -6,4 +6,4 @@ const ConnectedStatus = mongoose.Schema({
     robot: {type: Boolean, require: true}
 })
 
-module.exports = mongoose.model('connectedStatus', ConnectedStatus)
+export default mongoose.model('ConnectedStatus', ConnectedStatus)

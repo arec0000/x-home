@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const Esp = new mongoose.Schema({
     climate: {
@@ -19,4 +19,4 @@ const Esp = new mongoose.Schema({
     ]
 })
 
-module.exports = mongoose.model('esp', Esp)
+export default mongoose.model('Esp', Esp)

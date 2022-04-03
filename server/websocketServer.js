@@ -1,17 +1,16 @@
-const ws = require('ws');
-const mongoose = require('mongoose');
-const {spawn} = require('child_process')
-const Jimp = require('jimp')
+import { WebSocketServer as wss } from 'ws'
+import { spawn } from 'child_process'
+import Jimp from 'jimp'
 
-const Esp = require('./schemes/esp')
-const Farm = require('./schemes/farm')
-const Robot = require('./schemes/robot')
-const ConnectedStatus = require('./schemes/connected')
+import Esp from './schemes/esp.js'
+import Farm from './schemes/farm.js'
+import Robot from './schemes/robot.js'
+import ConnectedStatus from './schemes/connected.js'
 
 class WebsocketServer {
     start() {
         //создаём сервер из пакета ws
-        this.chanel = new ws.Server({port: 5000}, () => console.log('Websocket сервер запущен на порту 5000'))
+        this.chanel = new wss({port: 5000}, () => console.log('Websocket сервер запущен на порту 5000'))
         this.initDatabase()
         this.chanel.on('connection', (ws) => {
             console.log(`Пользователь подключился, всего ${this.chanel.clients.size} пользователей`)
@@ -109,11 +108,11 @@ class WebsocketServer {
             if (newMessage.title == 'page-data-request') {
                 if (newMessage.page == 'Главная') {
                     const esp = await Esp.findOne({})
-                    this.sendById('app', {esp})
+                    client.send(JSON.stringify({esp}))
                 }
                 if (newMessage.page == 'Робот') {
                     const robot = await Robot.findOne({})
-                    this.sendById('app', {robot})
+                    client.send(JSON.stringify({robot}))
                 }
             }
             if (newMessage.title == 'data-from-app-to-esp') {
@@ -187,11 +186,15 @@ class WebsocketServer {
                 })
             }
         } else if (client.id == 'greenhouse') {
-            newMessage.data.forEach(item => {
-                Farm.findOneAndUpdate({id: item.id}, item)
+            Promise.all(
+                newMessage.data.map(item =>
+                    new Promise(resolve => Farm.findOneAndUpdate({id: item.id}, item, () => resolve()))
+                )
+            ).then(async () => {
+                const farm = await Farm.find({})
+                this.sendById('app', {farm})
+                console.log(`Полученны данные от теплицы ${newMessage}`)
             })
-            this.sendById('app', {farm: newMessage.data})
-            console.log(`Полученны данные от теплицы ${newMessage}`)
         } else if (client.id == 'robot') {
             Robot.findOneAndUpdate({}, newMessage, {new: true}, (err, doc) => {
                 this.sendById('app', {robot: doc})
@@ -242,16 +245,14 @@ class WebsocketServer {
                 console.log(doc)
             }
         })
-        Farm.find({}, (err, doc) => {
-            if (!doc[0]) {
-                Farm.create({id: 1, temp: 30, humidity: 40}, (err, doc) => {
-                    console.log('Создана дефолтная секция фермы, по приказу Никиты')
-                });
-                Farm.create({id: 2, temp: 24, humidity: 74}, (err, doc) => {
-                    console.log('Создана дефолтная секция фермы, по приказу Никиты')
-                });
+        Farm.find({}, (err, docs) => {
+            if (!docs[0]) {
+                Farm.create([
+                    {id: 2, temp: 0, humidity: 0},
+                    {id: 1, temp: 0, humidity: 0}
+                ], (err, doc) => console.log('Созданы 2 дефолтные секции фермы, по приказу Никиты'))
             } else {
-                console.log(doc)
+                console.log(docs)
             }
         })
         Robot.findOne({}, (err, doc) => {
@@ -266,7 +267,7 @@ class WebsocketServer {
     }
 }
 
-module.exports = new WebsocketServer()
+export default new WebsocketServer()
 
         // Farm.deleteOne({}, function(err, result) {
 

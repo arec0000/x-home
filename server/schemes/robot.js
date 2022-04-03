@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const Robot = mongoose.Schema({
     state: {type: Boolean, required: true},
@@ -6,4 +6,4 @@ const Robot = mongoose.Schema({
     target: {type: Number, required: true}
 })
 
-module.exports = mongoose.model('Robot', Robot)
+export default mongoose.model('Robot', Robot)
