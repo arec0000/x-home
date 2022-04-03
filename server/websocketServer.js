@@ -23,6 +23,9 @@ class WebsocketServer {
                             .replace(/\\["\\\/bfnrtu]/g, '@')
                             .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
                             .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+                            //
+                            console.log(`Получены данные ${message.toString()}`)
+                            //
                             const newMessage = JSON.parse(message)
                             if (newMessage.title == 'authentication') {
                                 this.authenticate(newMessage.id, ws)
