@@ -19,5 +19,5 @@ fast.get('/', (req, res) => {
 try {
     websocketServer.start()
 }   catch(error) {
-    console.log(`Ошибка при запуске websocket сервера ${error.message}`)
+    console.error(`Ошибка при запуске websocket сервера ${error.message}`)
 }
