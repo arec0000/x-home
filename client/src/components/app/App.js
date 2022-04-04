@@ -1,11 +1,9 @@
 import { Component } from 'react';
+import { Routes, Route} from 'react-router-dom';
 import socket from './socket';
 
 import Header from '../header/header';
-import ClimateWidget from '../climate/climate';
-import DoorControl from '../door/door';
-import LightControl from '../light/light';
-import ScenariosControl from '../scenarios/scenarios';
+import Main from '../main/main';
 import RobotControl from '../robot-control/robot-control';
 import Greenhouse from '../greenhouse/greenhouse';
 import GreenhouseInside from '../greenhouse-Inside/greenhouse-inside';
@@ -16,9 +14,13 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: localStorage.getItem('lastPage') || 'Главная',
-            pages: ['Главная', 'Внешняя теплица', 'Внутренняя теплица', 'Робот'],
             connectedStatus: null,
+            pages: [
+                {name: 'Главная', route: '/'},
+                {name: 'Внешняя теплица', route: '/greenhouse-outside'},
+                {name: 'Внутренняя теплица', route: '/greenhouse-inside'},
+                {name: 'Робот', route: '/robot-control'}
+            ],
             climate: {sensTemp: 15, sensWet: 45, wishTemp: 0, wishWet: 0},
             doorControl: false,
             lightButtons: [
@@ -45,10 +47,56 @@ class App extends Component {
         }
     }
 
-    changePage = (page) => {
-        this.setState({currentPage: page});
-        localStorage.setItem('lastPage', page);
-        this.sendData({title: 'page-data-request', page});
+    onChangeClimate = (e) => {
+        if (e.target.value.replace(/\D/g, '').length <= 3) {
+
+            e.target.value = e.target.value.replace(/\D/g, '');
+
+            if (e.target.value === '0') {
+                e.target.value = ''
+            }
+
+            if (e.target.value.replace(/\D/g, '').length === 3 && e.target.value !== '100') {
+                e.target.value = +e.target.value.replace(/\D/g, '') / 10;
+            }
+
+            this.setState(({climate}) => ({
+                climate: {...climate, [e.target.getAttribute('data-input')]: e.target.value}
+            }));
+        }
+    }
+
+    onToggleLight = (id) => {
+        new Promise(resolve => this.setState(({lightButtons}) => ({
+            lightButtons: lightButtons.map(item =>
+                item.id === id ? {...item, shine: !item.shine} : item
+            )
+        }), resolve))
+            .then(() =>
+                this.sendData({title: 'data-from-app-to-esp', lightButtons: this.state.lightButtons})
+            );
+    }
+
+    onClickDoor = () => {
+        new Promise(resolve => this.setState(({doorControl}) => ({doorControl: !doorControl}), resolve))
+            .then(() =>
+                this.sendData({title: 'data-from-app-to-esp', doorControl: this.state.doorControl})
+            );
+    }
+
+    changeRobotTarget = (id) => {
+        const connected = this.state.connectedStatus ? this.state.connectedStatus.robot : undefined;
+        if (id !== this.state.robot.target && id !== this.state.robot.current && connected === undefined) {
+            this.setState({robot: {...this.state.robot, target: id}});
+            return console.error('Связь с сервером потеряна, отправка данных на робота невозможна!');
+        }
+        if (id !== this.state.robot.target && id !== this.state.robot.current && connected) {
+            this.setState({robot: {state: true, current: this.state.robot.current, target: id}});
+            this.sendData({title: 'data-from-app-to-robot', target: id});
+        } else if (id !== this.state.robot.target && id !== this.state.robot.current) {
+            this.setState({robot: {...this.state.robot, target: id}});
+            console.error('Робот не в сети, отправка данных невозможна!');
+        }
     }
 
     sendData = (data) => {
@@ -96,59 +144,37 @@ class App extends Component {
     }
 
     render() {
-        const {currentPage, pages, connectedStatus, climate,
-               doorControl, lightButtons, farm, robot, robotRooms} = this.state;
-
-        const Page = () => {
-            switch (currentPage) {
-                case 'Внешняя теплица':
-                    return <ul className='widgets'>
-                             <Greenhouse
-                                key={1}
-                                farm={farm}/>
-                           </ul>
-                case 'Внутренняя теплица':
-                    return <ul className='widgets'>
-                             <GreenhouseInside
-                                key={1}/>
-                           </ul>
-                case 'Робот':
-                    return <RobotControl
-                                robot={robot}
-                                robotRooms={robotRooms}
-                                connectedStatus={connectedStatus}
-                                sendData={this.sendData}/>
-                default: //Главная
-                    return (
-                        <ul className="widgets">
-                            <ClimateWidget
-                                key={1}
-                                climate={climate}
-                                sendData={this.sendData}/>
-                            <DoorControl
-                                key={2}
-                                doorControl={doorControl}
-                                sendData={this.sendData}/>
-                            <LightControl
-                                key={3}
-                                lightButtons={lightButtons}
-                                sendData={this.sendData}/>
-                            <ScenariosControl
-                                key={4}/>
-                        </ul>
-                    );
-            }
-        }
+        const {connectedStatus, pages, climate, doorControl,
+               lightButtons, farm, robot, robotRooms} = this.state;
 
         return (
-            <div className="App">
+            <>
                 <Header
-                    currentPage={currentPage}
                     pages={pages}
-                    connectedStatus={connectedStatus}
-                    changePage={this.changePage}/>
-                <Page/>
-            </div>
+                    connectedStatus={connectedStatus}/>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Main
+                                    climate={climate}
+                                    onChangeClimate={this.onChangeClimate}
+                                    doorControl={doorControl}
+                                    onClickDoor={this.onClickDoor}
+                                    lightButtons={lightButtons}
+                                    onToggleLight={this.onToggleLight}
+                                    sendData={this.sendData}/>
+                                } />
+                    <Route path="/greenhouse-outside" element={<Greenhouse farm={farm}/>} />
+                    <Route path="/greenhouse-inside" element={<GreenhouseInside/>} />
+                    <Route
+                        path="/robot-control"
+                        element={<RobotControl
+                                    robot={robot}
+                                    robotRooms={robotRooms}
+                                    changeRobotTarget={this.changeRobotTarget}/>
+                                } />
+                </Routes>
+            </>
         );
     }
 }

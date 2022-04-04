@@ -8,27 +8,8 @@ class ClimateWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            wishTemp: this.props.climate.wishTemp,
-            wishWet: this.props.climate.wishWet,
             tempIsValid: true,
             wetIsValid: true
-        }
-    }
-
-    onChange = (e) => {
-        if (e.target.value.replace(/\D/g, '').length <= 3) {
-
-            e.target.value = e.target.value.replace(/\D/g, '');
-
-            if (e.target.value === '0') {
-                e.target.value = ''
-            }
-
-            if (e.target.value.replace(/\D/g, '').length === 3 && e.target.value !== '100') {
-                e.target.value = +e.target.value.replace(/\D/g, '') / 10;
-            }
-
-            this.setState({[e.target.getAttribute('data-input')]: e.target.value});
         }
     }
 
@@ -51,8 +32,8 @@ class ClimateWidget extends Component {
                     title: 'data-from-app-to-esp',
                     climate: {sensTemp: this.props.climate.sensTemp,
                               sensWet: this.props.climate.sensWet,
-                              wishTemp: +this.state.wishTemp,
-                              wishWet: +this.state.wishWet}
+                              wishTemp: +this.props.wishTemp,
+                              wishWet: +this.props.wishWet}
                 });
             }
         })
@@ -66,9 +47,9 @@ class ClimateWidget extends Component {
                     <input
                         className={this.state.tempIsValid ? 'climate__input' : 'climate__input wrong'}
                         type="text"
-                        value={this.state.wishTemp}
+                        value={this.props.climate.wishTemp}
                         data-input="wishTemp"
-                        onChange={this.onChange}
+                        onChange={this.props.onChangeClimate}
                         onBlur={this.onBlur}/>
                 </div>
                 <div>
@@ -76,9 +57,9 @@ class ClimateWidget extends Component {
                     <input
                         className={this.state.wetIsValid ? 'climate__input' : 'climate__input wrong'}
                         type="text"
-                        value={this.state.wishWet}
+                        value={this.props.climate.wishWet}
                         data-input="wishWet"
-                        onChange={this.onChange}
+                        onChange={this.props.onChangeClimate}
                         onBlur={this.onBlur}/>
                 </div>
             </WidgetGround>

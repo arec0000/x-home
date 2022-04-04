@@ -79,11 +79,13 @@ class GreenhouseInside extends Component {
                 </button>
             )
         })
-        return(
-            <>
+        return (
+            <ul className='widgets'>
                 {outputs}
-                <WidgetGround className="farm-control" key="farmControle">{controls}</WidgetGround>
-            </>
+                <WidgetGround className="farm-control" key="farmControle">
+                    {controls}
+                </WidgetGround>
+            </ul>
         )
     }
 }

@@ -1,34 +1,38 @@
 import { Component } from 'react'
-
+import { Link } from 'react-router-dom';
 import './header.css';
 
 class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuOpened: localStorage.getItem('menuLastState') === 'true'
+            menuOpened: false,
+            currentPath: window.location.pathname
         }
     }
 
     onToggleMenu = () => {
-        new Promise(resolve => this.setState(({menuOpened}) => ({menuOpened: !menuOpened}), resolve))
-            .then(() => localStorage.setItem('menuLastState', this.state.menuOpened));
-            //Если придут данные с сервера это изменит главный стейт и закроет меню, что неудобно
-            //возможно этого не происходит
+        this.setState(({menuOpened}) => ({menuOpened: !menuOpened}));
+    }
+
+    changePage = (route) => {
+        this.setState({currentPath: route});
     }
 
     render() {
-        const {currentPage, pages, connectedStatus, changePage} = this.props;
+        const {pages, connectedStatus} = this.props;
+
         let clazz;
+
         if (connectedStatus) {
-            switch(currentPage) {
-                case 'Главная':
+            switch(this.state.currentPath) {
+                case '/':
                     clazz = connectedStatus.esp ? 'house-connect-status-on' : 'house-connect-status-off';
                     break;
-                case 'Внешняя теплица':
+                case '/greenhouse-outside':
                     clazz = connectedStatus.greenhouse ? 'farm-connect-status-on' : 'farm-connect-status-off';
                     break;
-                case 'Робот':
+                case '/robot-control':
                     clazz = connectedStatus.robot ? 'robot-connect-status-on' : 'robot-connect-status-off';
                     break;
                 default:
@@ -38,12 +42,15 @@ class Header extends Component {
             clazz = 'disconnected';
         }
 
-        const links = pages.map(item => (
+        const links = pages.map((item, index) => (
             <li
-                className={item === currentPage ? 'current' : ''}
-                key={item}
-                onClick={() => changePage(item)}>
-                    {item}
+                key={index}>
+                    <Link
+                        to={item.route}
+                        className={item.route === window.location.pathname ? "menu__link current" : "menu__link"}
+                        onClick={() => this.changePage(item.route)}>
+                            {item.name}
+                    </Link>
             </li>
         ));
 

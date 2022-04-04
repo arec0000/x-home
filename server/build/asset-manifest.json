@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.4904e379.css",
-    "main.js": "/static/js/main.6cba3382.js",
+    "main.css": "/static/css/main.b6cc0135.css",
+    "main.js": "/static/js/main.28fb63d7.js",
     "static/media/robot-on.svg": "/static/media/robot-on.f883f00ecf954613130c.svg",
     "static/media/house-on.svg": "/static/media/house-on.caa99c8ad065caebc91a.svg",
     "static/media/robot-off.svg": "/static/media/robot-off.bf23a2e0839f7be120e0.svg",
@@ -17,11 +17,11 @@
     "static/media/settings.svg": "/static/media/settings.cb72c197c302b1067858.svg",
     "index.html": "/index.html",
     "static/media/menu.svg": "/static/media/menu.56bfe14acadff9ed7fff.svg",
-    "main.4904e379.css.map": "/static/css/main.4904e379.css.map",
-    "main.6cba3382.js.map": "/static/js/main.6cba3382.js.map"
+    "main.b6cc0135.css.map": "/static/css/main.b6cc0135.css.map",
+    "main.28fb63d7.js.map": "/static/js/main.28fb63d7.js.map"
   },
   "entrypoints": [
-    "static/css/main.4904e379.css",
-    "static/js/main.6cba3382.js"
+    "static/css/main.b6cc0135.css",
+    "static/js/main.28fb63d7.js"
   ]
 }

@@ -80,25 +80,29 @@ header {
     color: #FDFDFD;
 }
 
-.pagesList li {
+.menu__link {
+    display: block;
     padding: 0 0 5px 25px;
     list-style: none;
     cursor: pointer;
+    color: #FDFDFD;
+    font-size: calc((100vw - 350px)/(1280 - 350) * (32 - 22) + 22px);
+    text-decoration: none;
     transition-property: box-shadow, background-color, padding;
     transition-duration: 0.15s;
 }
 
-.pagesList .current {
+.menu__link.current {
     background-color: #353548;
 }
 
-.pagesList li:hover {
+.menu__link:hover {
     padding-left: 30px;
     background-color: #53536C;
     box-shadow: 0 0 5px rgba(0, 0, 0, .05);
 }
 
-.pagesList li:active {
+.menu__link:active {
     background-color: #2E2E3F;
 }
 
@@ -187,7 +191,7 @@ header {
         width: 65%;
     }
 
-    .pagesList li {
+    .menu__link {
         padding: 7px 0 7px 25px;
     }
 
