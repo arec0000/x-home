@@ -99,24 +99,15 @@ class WebsocketServer {
             console.log('esp подключено')
         }
         if (id == 'robot') {
-            Robot.findOneAndUpdate({}, {state: false, current: 1, target: 1}, {new: true}, (err, doc) =>
-                console.log(`Робот подключен, данные изменены на дефолтные ${doc}`)
-            )
+            Robot.findOneAndUpdate({}, {state: false, current: 1, target: 1}, {new: true}, (err, robot) => {
+                this.sendById('app', {robot})
+                console.log(`Робот подключен, данные изменены на дефолтные ${robot}`)
+            })
         }
     }
 
     async receiveData(newMessage, client) {
         if (client.id == 'app') {
-            if (newMessage.title == 'page-data-request') {
-                if (newMessage.page == 'Главная') {
-                    const esp = await Esp.findOne({})
-                    client.send(JSON.stringify({esp}))
-                }
-                if (newMessage.page == 'Робот') {
-                    const robot = await Robot.findOne({})
-                    client.send(JSON.stringify({robot}))
-                }
-            }
             if (newMessage.title == 'data-from-app-to-esp') {
                 new Promise(resolve => {
                     if (newMessage.climate) {
@@ -151,10 +142,24 @@ class WebsocketServer {
             }
         } else if (client.id == 'esp') {
             if (newMessage.title == 'data-from-esp-to-app') {
-                Esp.findOneAndUpdate({}, newMessage.data, {new: true}, (err, esp) => {
-                    this.sendById('app', {esp})
-                    console.log(`Полученны данные от esp ${JSON.stringify(newMessage)}`)
-                })
+                if (newMessage.data.climate) {
+                    const esp = await Esp.findOne({})
+                    const climate = {
+                        sensTemp: newMessage.data.climate.sensTemp || esp.climate.sensTemp,
+                        sensWet: newMessage.data.climate.sensWet || esp.climate.sensWet,
+                        wishTemp: newMessage.data.climate.wishTemp || esp.climate.wishTemp,
+                        wishWet: newMessage.data.climate.wishWet || esp.climate.wishWet
+                    }
+                    Esp.findOneAndUpdate({}, {...newMessage.data, climate}, {new: true}, (err, esp) => {
+                        this.sendById('app', {esp})
+                        console.log(`Полученны данные от esp ${JSON.stringify(newMessage)}`)
+                    })
+                } else {
+                    Esp.findOneAndUpdate({}, newMessage.data, {new: true}, (err, esp) => {
+                        this.sendById('app', {esp})
+                        console.log(`Полученны данные от esp ${JSON.stringify(newMessage)}`)
+                    })
+                }
             }
             if (newMessage.title == 'data-from-esp-to-cv') {
                 Jimp.read(newMessage.data).then(image => {
