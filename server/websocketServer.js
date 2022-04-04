@@ -1,5 +1,6 @@
 import { WebSocketServer as wss } from 'ws'
 import { spawn } from 'child_process'
+import uniqid from 'uniqid';
 import Jimp from 'jimp'
 
 import Esp from './schemes/esp.js'
@@ -83,12 +84,13 @@ class WebsocketServer {
     async authenticate(id, client) {
         client.id = id
         if (id == 'app') {
+            client._sessionId = uniqid();
             const esp = await Esp.findOne({})
             const farm = await Farm.find({})
             const robot = await Robot.findOne({})
             const connectedStatus = await ConnectedStatus.findOne({})
             client.send(JSON.stringify({connectedStatus, esp, farm, robot}))
-            console.log('Приложение подключено')
+            console.log(`Приложение подключено id ${client._sessionId}`)
         } else {
             ConnectedStatus.findOneAndUpdate({}, {[id]: true}, {new: true},
                 (err, connectedStatus) => this.sendById('app', {connectedStatus}))
@@ -131,12 +133,14 @@ class WebsocketServer {
                 }).then(async () => {
                     const esp = await Esp.findOne({})
                     this.sendById('esp', esp)
+                    this.appBroadcast(client, {esp});
                     console.log(`Отправлены данные на esp ${esp}`)
                 })
             }
             if (newMessage.title == 'data-from-app-to-robot') {
-                Robot.findOneAndUpdate({}, {target: newMessage.target}, {new: true}, (err, doc) => {
-                    console.log(`Данные робота изменены ${doc}`)
+                Robot.findOneAndUpdate({}, {target: newMessage.target}, {new: true}, (err, robot) => {
+                    this.appBroadcast(client, {robot});
+                    console.log(`Данные робота изменены ${robot}`)
                 })
                 this.sendById('robot', {target: newMessage.target})
             }
@@ -204,6 +208,14 @@ class WebsocketServer {
     sendById(id, message) {
         this.chanel.clients.forEach(client => {
             if (client.id == id) {
+                client.send(JSON.stringify(message))
+            }
+        })
+    }
+
+    appBroadcast(exceptionClient, message) {
+        this.chanel.clients.forEach(client => {
+            if (client.id == 'app' && client._sessionId != exceptionClient._sessionId) {
                 client.send(JSON.stringify(message))
             }
         })
