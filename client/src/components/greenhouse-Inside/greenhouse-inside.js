@@ -73,15 +73,17 @@ class GreenhouseInside extends Component {
             return(
                 <button
                     key={item.id}
-                    className= {item.state ? "control__button active" : "control__button"}
+                    className= {`${item.state ? "control__button active" : "control__button"}${!item.toggleRoute ? " disabled" : ""}`}
                     onClick={() => this.onToggleFarmControl(item.id, item.toggleRoute)}>
                     {item.name}
                 </button>
             )
         })
         return(
-            <>{outputs}
-            <WidgetGround className="farm-control" key="farmControle">{controls}</WidgetGround></>
+            <>
+                {outputs}
+                <WidgetGround className="farm-control" key="farmControle">{controls}</WidgetGround>
+            </>
         )
     }
 }

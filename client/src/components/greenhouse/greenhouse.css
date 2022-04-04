@@ -1,16 +1,18 @@
 .farm-section {
-    font-size: calc((100vw - 350px)/(1280 - 350) * (30 - 14) + 14px);
+    font-size: calc((100vw - 350px)/(1280 - 350) * (30 - 13) + 13px);
     font-weight: bold;
 }
 
 .title {
+    padding-left: 5px;
+    font-size: calc((100vw - 350px)/(1280 - 350) * (30 - 14) + 14px);
     color: #646769;
 }
 
 .farm-outputs {
     display: flex;
     justify-content: space-between;
-    padding: 5px 45px 10px 45px;
+    padding: 5px 45px 10px 40px;
 }
 
 @media(max-width: 630px) {
@@ -21,6 +23,6 @@
 
 @media (max-width: 490px) {
     .farm-outputs {
-        padding: 5px 10px 10px 10px;
+        padding: 5px 15px 0 15px;
     }
 }

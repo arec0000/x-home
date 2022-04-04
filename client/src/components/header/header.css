@@ -170,6 +170,10 @@ header {
 }
 
 @media (max-width: 640px) {
+    header {
+        margin-bottom: 15px;
+    }
+
     .button-menu{
         transform: scale(0.8);
     }
@@ -181,6 +185,10 @@ header {
 
     .menu {
         width: 65%;
+    }
+
+    .pagesList li {
+        padding: 7px 0 7px 25px;
     }
 
     .connected-icon {
@@ -211,6 +219,10 @@ header {
 }
 
 @media (max-width: 475px) {
+    header {
+        margin-bottom: 10px;
+    }
+
     .button-menu{
         margin-left: 0;
         transform: scale(0.5);

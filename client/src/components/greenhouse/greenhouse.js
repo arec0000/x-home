@@ -11,8 +11,8 @@ const Greenhouse = (props) => {
                 key={index}>
                         <span className="title">Секция {item.id}</span>
                         <div className="farm-outputs">
-                            <span>Температура {item.temp}°</span>
-                            <span>Влажность {item.humidity}%</span>
+                            <span>Температура {item.temp.toFixed(1)}°</span>
+                            <span>Влажность {item.humidity.toFixed(1)}%</span>
                         </div>
                 </WidgetGround>
             )

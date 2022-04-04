@@ -14,6 +14,7 @@ class Header extends Component {
         new Promise(resolve => this.setState(({menuOpened}) => ({menuOpened: !menuOpened}), resolve))
             .then(() => localStorage.setItem('menuLastState', this.state.menuOpened));
             //Если придут данные с сервера это изменит главный стейт и закроет меню, что неудобно
+            //возможно этого не происходит
     }
 
     render() {

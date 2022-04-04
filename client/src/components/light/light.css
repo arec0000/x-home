@@ -1,45 +1,39 @@
 .light-control {
-    font-size: 36px;
-    font-weight: bold;
-    font-size: 36px;
+    font-size: calc((100vw - 350px)/(1280 - 350) * (36 - 24) + 24px);
     font-weight: bold;
 }
 
-.light-control div {
+.btn-group {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 20px;
-    margin-left: 35px;
+    margin-top: 15px;
+    margin-left: 30px;
 }
 
 .light-off {
-    font-size: 36px;
-    font-weight: bold;
-    border-radius: 10px;
-    border: 0;
-    height: 72px;
     margin: 0 10px 20px 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 15px 20px;
+    border: 0;
+    border-radius: 10px;
     flex-grow: 1;
+    font-size: calc((100vw - 350px)/(1280 - 350) * (36 - 22) + 22px);
+    font-weight: bold;
     transition-property: box-shadow, background-color, outline;
     transition-duration: 0.15s;
     background-color: #EBECEE;
 }
 
 .light-on {
-    font-size: 36px;
-    font-weight: bold;
-    border-radius: 10px;
-    border: 0;
-    height: 72px;
-    background-color: bisque;
     margin: 0 10px 20px 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 15px 20px;
+    border: 0;
+    border-radius: 10px;
     flex-grow: 1;
+    font-size: calc((100vw - 350px)/(1280 - 350) * (36 - 22) + 22px);
+    font-weight: bold;
     transition-property: box-shadow, background-color, outline;
     transition-duration: 0.15s;
+    background-color: bisque;
 }
 
 .light-off:focus-visible {
@@ -68,33 +62,29 @@
     box-shadow: 0 2px 5px #C5CFFF;
 }
 
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column;
+    }
 
-@media (max-width: 830px) {
     .light-control div {
         margin-left: 0;
-    }
-}
-
-@media (max-width: 370px) {
-    .light-control {
-        font-size: 30px;
-    }
-
-    .light-on {
-        padding-left: 10px;
-        padding-right: 10px;
-        font-size: 30px;
-    }
-
-    .light-off {
-        padding-left: 10px;
-        padding-right: 10px;
-        font-size: 30px;
     }
 
     .light-control span {
         display: block;
         text-align: center;
-        margin: 0 auto;
+    }
+
+    .light-on {
+        margin: 0 5% 15px 5%;
+    }
+
+    .light-off {
+        margin: 0 5% 15px 5%;
+    }
+
+    .btn-group button:last-child {
+        margin: 0 5% 10px 5%;
     }
 }

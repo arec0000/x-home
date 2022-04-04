@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const WidgetGround = styled.li`
     margin: 0 auto 20px auto;
-    padding: 20px 35px 20px 35px;
+    padding: 20px 40px 20px 40px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
     background-color: white;
@@ -18,6 +18,7 @@ const WidgetGround = styled.li`
 
     @media (max-width: 410px) {
         & {
+            margin: 0 auto 15px auto;
             padding: 20px 15px 20px 15px;
         }
     }
