@@ -32,8 +32,8 @@ class ClimateWidget extends Component {
                     title: 'data-from-app-to-esp',
                     climate: {sensTemp: this.props.climate.sensTemp,
                               sensWet: this.props.climate.sensWet,
-                              wishTemp: +this.props.wishTemp,
-                              wishWet: +this.props.wishWet}
+                              wishTemp: +this.props.climate.wishTemp,
+                              wishWet: +this.props.climate.wishWet}
                 });
             }
         })
