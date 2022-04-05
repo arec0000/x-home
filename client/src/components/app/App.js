@@ -40,9 +40,7 @@ class App extends Component {
                 {name: 'Спальня', id: 2},
                 {name: 'Кухня', id: 3},
                 {name: 'Гостинная', id: 4},
-                {name: 'Корридор', id: 5},
-                {name: 'Гардеробная', id: 6},
-                {name: 'Холл', id: 7}
+                {name: 'Коридор', id: 5}
             ]
         }
     }
