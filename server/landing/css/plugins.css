@@ -1,0 +1,23 @@
+/*-----------------------------------------------------------------------------------
+
+	Theme Name: Copa
+	Theme URI: http://
+	Description: The Multi-Purpose Onepage Template
+	Author: prewebsolution
+	Author URI: http://themeforest.net/user/prewebsolution
+	Version: 1.0
+
+-----------------------------------------------------------------------------------*/
+
+/* ----------------------------------------------------------------
+			[ All Css Plugins & Helper Classes File ]
+-----------------------------------------------------------------*/
+
+/* == bootstrap == */
+@import url("plugins/bootstrap.min.css");
+
+/* == animate Headline == */
+@import url("plugins/animate.min.css");
+
+/* == helper classes == */
+@import url("plugins/helper.css");
