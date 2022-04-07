@@ -187,7 +187,13 @@ class WebsocketServer {
         } else if (client.id == 'greenhouse') {
             Promise.all(
                 newMessage.data.map(item =>
-                    new Promise(resolve => Farm.findOneAndUpdate({id: item.id}, item, () => resolve()))
+                    new Promise(resolve => {
+                        if (item.temp == null || item.humidity == null) {
+                            resolve()
+                        } else {
+                            Farm.findOneAndUpdate({id: item.id}, item, () => resolve())
+                        }
+                    })
                 )
             ).then(async () => {
                 const farm = await Farm.find({})
