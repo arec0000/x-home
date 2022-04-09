@@ -256,7 +256,7 @@ class WebsocketServer {
                 Esp.findOne({}, (err, doc) => {
                     if (!doc) {
                         Esp.create({
-                            climate: {sensTemp: 0, sensWet: 0, wishTemp: 0, wishWet: 0},
+                            climate: {sensTemp: 24.3, sensWet: 40.1, wishTemp: 0, wishWet: 0},
                             doorControl: false,
                             lightButtons: [
                                 {name: 'спальня', shine: false, id: 1},
