@@ -6,16 +6,16 @@ class GreenhouseInside extends Component {
     constructor(props) {
         super(props);
         this.state = {
+                dataetime: '',
                 sensors: [
                     {id: 'tempWater', name: 'Температура воды', value: 27, measure: '°'},
                     {id: 'tempAir', name: 'Температура воздуха', value: 100, measure: '%'},
                     {id: 'humidity', name: 'Влажность', value: 42, measure: '%'}
                 ],
-                dataetime: '',
                 control: [
                     {id: 'pump_state', name: 'Полив', toggleRoute: '/pump/config', state: false},
                     {id: 'led_state', name: 'Свет', toggleRoute: '/led/config', state: false},
-                    {id: 'water_level', name: 'Уровень воды',state: false}
+                    {id: 'water_level', name: 'Уровень воды', state: false}
                 ]
         }
     }
@@ -25,36 +25,25 @@ class GreenhouseInside extends Component {
             this.setState(({control}) => ({
                 control: control.map(item => item.id === id ? {...item, state: !item.state} : item)
             }))
-            fetch(`http://predeludel.pythonanywhere.com${toggleRoute}`)
+            fetch(`http://11.1.30.22:5000${toggleRoute}`)
                 .catch(error => console.error(`Ошибка при отправке данных на http://predeludel.pythonanywhere.com${toggleRoute} ${error}`))
         }
     }
 
     sendRequest = async (link) => {
         const response = await fetch(link)
-        const {data} = await response.json()
+        const data = await response.json()
+        console.log(data);
         if (this._isMounted) {
             new Promise(resolve =>
-                this.setState({
-                    dataetime: data.dataetime,
-                    sensors: [
-                        {id: 'water_temp_c', name: 'Температура воды', value: data.water_temp_c, measure: '°'},
-                        {id: 'air_temp_c', name: 'Температура воздуха', value: data.air_temp_c, measure: '%'},
-                        {id: 'humidity', name: 'Влажность', value: data.humidity, measure: '%'}
-                    ],
-                    control: [
-                        {id: 'pump_state', name: 'Полив', toggleRoute: '/pump/config', state: data.pump_state},
-                        {id: 'led_state', name: 'Свет', toggleRoute: '/led/config', state: data.led_state},
-                        {id: 'water_level', name: 'Уровень воды', state: data.water_level}
-                    ]
-                }, resolve)
+                this.setState({...data}, resolve)
             ).then(() => setTimeout(() => this.sendRequest(link), 3000))
         }
     }
 
     componentDidMount = () => {
         this._isMounted = true
-        this.sendRequest('http://predeludel.pythonanywhere.com/api/data')
+        this.sendRequest('http://11.1.30.22:5000/api/data')
     }
 
     componentWillUnmount = () => {
